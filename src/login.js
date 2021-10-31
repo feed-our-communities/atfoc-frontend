@@ -8,12 +8,17 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
 
+        this.username = React.createRef();
+        this.password = React.createRef();
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit() {
 
-        console.log("log");
+        //make api call with the two refs 
+
+
 
 
 
@@ -25,17 +30,32 @@ class Login extends React.Component {
             <>
                 <h1>Login</h1>
                 <Form>
-                    <Form.Group className="mb-3" controlId="formLoginUsername">
-                        <Form.Control type="email" placeholder="Username" />
+                    <Form.Group
+                        controlId="formLoginUsername"
+                    >
+                        <Form.Control
+                            type="email"
+                            placeholder="Username"
+                            ref={this.username}
+                        />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formLoginPassword">
-                        <Form.Control type="password" placeholder="Password" />
+                    <Form.Group
+                        controlId="formLoginPassword"
+                    >
+                        <Form.Control
+                            type="password"
+                            placeholder="Password"
+                            ref={this.password}
+                        />
                     </Form.Group>
                     <Button variant="primary" type="submit" onClick={this.handleSubmit}>
                         Login
                     </Button>
                 </Form>
+                <Button ariant="primary" type="submit">
+                    Create An Account
+                </Button>
             </>
         );
     }
