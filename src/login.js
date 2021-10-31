@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
 
@@ -16,46 +18,68 @@ class Login extends React.Component {
 
     handleSubmit() {
 
-        //make api call with the two refs 
+        if (this.username.current != null && this.password.current != null) {
 
+            console.log(this.username.current.value);
 
+            var formdata = new FormData();
+            formdata.append("username", this.username.current.value);
+            formdata.append("password", this.password.current.value);
 
+            var requestOptions = {
+                method: 'POST',
+                body: formdata,
+                redirect: 'follow'
+            };
 
+            fetch("http://localhost:8000/api/identity/login/", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
 
+        } else {
+
+            //error message? 
+
+        }
     }
 
     render() {
 
         return (
             <>
-                <h1>Login</h1>
-                <Form>
-                    <Form.Group
-                        controlId="formLoginUsername"
-                    >
-                        <Form.Control
-                            type="email"
-                            placeholder="Username"
-                            ref={this.username}
-                        />
-                    </Form.Group>
+                <Card className="whiteCard">
+                    <Card.Body>
+                        <h1>Login</h1>
+                        <Form>
+                            <Form.Group
+                                controlId="formLoginUsername"
+                                className="mb-3"
+                            >
+                                <Form.Control
+                                    type="email"
+                                    placeholder="Username"
+                                    ref={this.username}
+                                />
+                            </Form.Group>
 
-                    <Form.Group
-                        controlId="formLoginPassword"
-                    >
-                        <Form.Control
-                            type="password"
-                            placeholder="Password"
-                            ref={this.password}
-                        />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" onClick={this.handleSubmit}>
-                        Login
-                    </Button>
-                </Form>
-                <Button ariant="primary" type="submit">
-                    Create An Account
-                </Button>
+                            <Form.Group
+                                controlId="formLoginPassword"
+                            >
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Password"
+                                    ref={this.password}
+                                />
+                            </Form.Group>
+                            <Button variant="custom" type="button" onClick={this.handleSubmit}>
+                                Login
+                            </Button>
+                        </Form>
+                        <p>Not a member yet? <span><Link to="/newAccount">Sign up</Link></span></p>
+                    </Card.Body>
+                </Card>
+
             </>
         );
     }

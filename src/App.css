@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import "~bootstrap/scss/bootstrap";
 .App {
   text-align: center;
 }
@@ -26,6 +28,27 @@
 
 .App-link {
   color: #61dafb;
+}
+
+body {
+  background-color: #EF8354;
+}
+
+.btn-custom {
+  font-family: "Open Sans", sans-serif;
+  background-color: #EF8354;
+  color: white;
+  padding: .5rem 4rem;
+  font-size: 1.5rem;
+  border-radius: 25px;
+  border: none;
+}
+
+.whiteCard {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  width: 30rem;
 }
 
 @keyframes App-logo-spin {
