@@ -52,6 +52,10 @@ class CreateAccount extends React.Component {
 
     }
 
+    componentDidMount() {
+        console.log("mounted");
+    }
+
 
     render() {
         return (
