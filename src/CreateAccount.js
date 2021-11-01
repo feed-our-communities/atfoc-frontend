@@ -88,7 +88,7 @@ class CreateAccount extends React.Component {
                             </Button>
                         </Form>
 
-                        <p>Already have an account? <span><Link to="/">Login</Link></span></p>
+                        <p>Already have an account? <span><Link to="/Login">Login</Link></span></p>
 
                     </Card.Body>
                 </Card>

@@ -7,7 +7,7 @@ import CreateAccount from './createAccount';
 const Main = () => {
     return (
         <Switch>
-            <Route exact path='/' component={Login}></Route>
+            <Route exact path='/Login' component={Login}></Route>
             <Route exact path='/CreateAccount' component={CreateAccount}></Route>
         </Switch>
     );
