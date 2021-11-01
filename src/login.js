@@ -65,6 +65,7 @@ class Login extends React.Component {
 
                             <Form.Group
                                 controlId="formLoginPassword"
+                                className="mb-3"
                             >
                                 <Form.Control
                                     type="password"
@@ -76,7 +77,7 @@ class Login extends React.Component {
                                 Login
                             </Button>
                         </Form>
-                        <p>Not a member yet? <span><Link to="/newAccount">Sign up</Link></span></p>
+                        <p>Not a member yet? <span><Link to="/CreateAccount">Sign up</Link></span></p>
                     </Card.Body>
                 </Card>
 
