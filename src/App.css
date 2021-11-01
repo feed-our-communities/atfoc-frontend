@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 .App {
   text-align: center;
 }
@@ -26,6 +28,28 @@
 
 .App-link {
   color: #61dafb;
+}
+
+body {
+  background-color: #EF8354 !important;
+}
+
+.btn-custom {
+  font-family: "Open Sans", sans-serif !important;
+  background-color: #EF8354 !important;
+  color: white !important;
+  padding: .5rem 4rem !important;
+  font-size: 1rem !important;
+  border-radius: 25px !important;
+  border: none !important;
+}
+
+.whiteCard {
+  margin-top: 15vh;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  background-color: white !important;
+  width: 30rem !important;
 }
 
 @keyframes App-logo-spin {
