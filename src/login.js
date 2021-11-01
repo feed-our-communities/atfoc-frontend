@@ -44,8 +44,11 @@ class Login extends React.Component {
         }
     }
 
-    render() {
+    componentDidMount() {
+        console.log("mounted");
+    }
 
+    render() {
         return (
             <>
                 <Card className="whiteCard">
