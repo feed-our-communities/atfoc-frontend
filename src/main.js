@@ -9,7 +9,7 @@ const Main = () => {
     return (
         <Router history={history}>
             <Switch>
-                <Route path='/Login'><Login /></Route>
+                <Route path='/'><Login /></Route>
                 <Route path='/CreateAccount'><CreateAccount /></Route>
             </Switch>
         </Router>

@@ -39,13 +39,9 @@ class Login extends React.Component {
 
         } else {
 
-            //error message? 
+            //error TODO 
 
         }
-    }
-
-    componentDidMount() {
-        console.log("mounted");
     }
 
     render() {
