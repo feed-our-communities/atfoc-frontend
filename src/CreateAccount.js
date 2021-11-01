@@ -14,12 +14,41 @@ class CreateAccount extends React.Component {
         this.password = React.createRef();
         this.confirmPassword = React.createRef();
         this.firstName = React.createRef();
-        this.LastName = React.createRef();
+        this.lastName = React.createRef();
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit() {
+
+        if (this.username.current != null &&
+            this.password.current != null &&
+            this.confirmPassword.current != null &&
+            this.firstName.current != null &&
+            this.lastName.current != null) {
+
+            var formdata = new FormData();
+            formdata.append("username", this.username.current.value);
+            formdata.append("password", this.password.current.value);
+            formdata.append("confirmPassword", this.confirmPassword.current.value);
+            formdata.append("firstName", this.firstName.current.value);
+            formdata.append("lastName", this.lastName.current.value);
+
+            var requestOptions = {
+                method: 'POST',
+                body: formdata,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:8000/api/identity/register/", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
+        } else {
+            //error 
+        }
+
 
     }
 

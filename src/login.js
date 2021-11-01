@@ -45,7 +45,6 @@ class Login extends React.Component {
     }
 
     render() {
-        console.log("yo")
         return (
             <>
                 <Card className="whiteCard">
