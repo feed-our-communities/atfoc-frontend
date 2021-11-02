@@ -11,6 +11,7 @@ const Main = () => {
             <Switch>
                 <Route path='/'><Login /></Route>
                 <Route path='/CreateAccount'><CreateAccount /></Route>
+                <Route path='/Home'><CreateAccount /></Route>
             </Switch>
         </Router>
     );
