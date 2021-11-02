@@ -5,6 +5,8 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 
+import history from "./history";
+
 class Login extends React.Component {
 
     constructor(props) {
@@ -13,10 +15,28 @@ class Login extends React.Component {
         this.username = React.createRef();
         this.password = React.createRef();
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.callLoginAPI = this.callLoginAPI.bind(this);
     }
 
-    handleSubmit() {
+    async callIdentityAPI() {
+
+    }
+
+    redirectAfterLogin() {
+
+        var id = await callIdentityAPI();
+
+        if (id["org"] !== "") {
+            //redirect to affiliated user TODO
+            localStorage.setItem("org", id["org"]);
+            history.push("/Home");
+        } else {
+            //redirect to affiliated user TODO 
+
+        }
+    }
+
+    callLoginAPI() {
 
         if (this.username.current != null && this.password.current != null) {
 
@@ -34,7 +54,16 @@ class Login extends React.Component {
 
             fetch("http://localhost:8000/api/identity/login/", requestOptions)
                 .then(response => response.text())
-                .then(result => console.log(result))
+                .then(result => {
+
+                    //TODO error case 
+
+                    var token = JSON.parse(result)["token"];
+                    localStorage.setItem("token", token);
+
+                    redirectAfterLogin();
+
+                })
                 .catch(error => console.log('error', error));
 
         } else {
@@ -72,7 +101,7 @@ class Login extends React.Component {
                                     ref={this.password}
                                 />
                             </Form.Group>
-                            <Button variant="custom" type="button" onClick={this.handleSubmit}>
+                            <Button variant="custom" type="button" onClick={this.callLoginAPI}>
                                 Login
                             </Button>
                         </Form>
