@@ -25,15 +25,9 @@ class Login extends React.Component {
     redirectAfterLogin() {
 
         var id = await callIdentityAPI();
+        localStorage.setItem("org", id["org"]);
+        history.push("/Home");
 
-        if (id["org"] !== "") {
-            //redirect to affiliated user TODO
-            localStorage.setItem("org", id["org"]);
-            history.push("/Home");
-        } else {
-            //redirect to affiliated user TODO 
-
-        }
     }
 
     callLoginAPI() {
