@@ -5,6 +5,8 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 
+import history from "./history";
+
 class Login extends React.Component {
 
     constructor(props) {
@@ -13,10 +15,26 @@ class Login extends React.Component {
         this.username = React.createRef();
         this.password = React.createRef();
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.callLoginAPI = this.callLoginAPI.bind(this);
     }
 
-    handleSubmit() {
+    async callIdentityAPI() {
+
+
+
+
+
+    }
+
+    redirectAfterLogin() {
+
+        var id = await callIdentityAPI();
+        localStorage.setItem("org", id["org"]);
+        history.push("/Home");
+
+    }
+
+    callLoginAPI() {
 
         if (this.username.current != null && this.password.current != null) {
 
@@ -26,26 +44,38 @@ class Login extends React.Component {
             formdata.append("username", this.username.current.value);
             formdata.append("password", this.password.current.value);
 
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
             var requestOptions = {
                 method: 'POST',
+                headers: myHeaders,
                 body: formdata,
                 redirect: 'follow'
             };
 
             fetch("http://localhost:8000/api/identity/login/", requestOptions)
                 .then(response => response.text())
-                .then(result => console.log(result))
+                .then(result => {
+
+                    //TODO error case 
+
+                    var token = JSON.parse(result)["token"];
+                    localStorage.setItem("token", token);
+
+                    redirectAfterLogin();
+
+                })
                 .catch(error => console.log('error', error));
 
         } else {
 
-            //error message? 
+            //error TODO 
 
         }
     }
 
     render() {
-
         return (
             <>
                 <Card className="whiteCard">
@@ -73,7 +103,7 @@ class Login extends React.Component {
                                     ref={this.password}
                                 />
                             </Form.Group>
-                            <Button variant="custom" type="button" onClick={this.handleSubmit}>
+                            <Button variant="custom" type="button" onClick={this.callLoginAPI}>
                                 Login
                             </Button>
                         </Form>

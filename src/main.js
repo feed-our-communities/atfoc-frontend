@@ -1,15 +1,19 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 
 import Login from './login';
 import CreateAccount from './createAccount';
+import history from './history';
 
 const Main = () => {
     return (
-        <Switch>
-            <Route exact path='/' component={Login}></Route>
-            <Route exact path='/CreateAccount' component={CreateAccount}></Route>
-        </Switch>
+        <Router history={history}>
+            <Switch>
+                <Route path='/'><Login /></Route>
+                <Route path='/CreateAccount'><CreateAccount /></Route>
+                <Route path='/Home'><CreateAccount /></Route>
+            </Switch>
+        </Router>
     );
 }
 
