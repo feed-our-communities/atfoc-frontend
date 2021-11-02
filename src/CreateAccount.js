@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 
-class CreateAccount extends React.Component {
+class CreateAccount extends React.PureComponent {
 
     constructor(props) {
         super(props);
