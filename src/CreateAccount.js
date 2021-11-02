@@ -140,14 +140,13 @@ class CreateAccount extends React.Component {
                                     ref={this.confirmPassword}
                                 />
                             </Form.Group>
-                            <Button variant="custom" type="submit" onClick={this.callRegisterAPI}>
+                            <Button variant="custom" type="button" onClick={this.callRegisterAPI}>
                                 Create Account
                             </Button>
                         </Form>
                         <p>Already have an account? <span><Link to="/">Login</Link></span></p>
                     </Card.Body>
                 </Card>
-
             </>
         );
 

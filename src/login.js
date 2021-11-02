@@ -20,6 +20,10 @@ class Login extends React.Component {
 
     async callIdentityAPI() {
 
+
+
+
+
     }
 
     redirectAfterLogin() {
@@ -40,8 +44,12 @@ class Login extends React.Component {
             formdata.append("username", this.username.current.value);
             formdata.append("password", this.password.current.value);
 
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
             var requestOptions = {
                 method: 'POST',
+                headers: myHeaders,
                 body: formdata,
                 redirect: 'follow'
             };
