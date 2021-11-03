@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
-
 import history from "./history";
 
 class Login extends React.Component {
@@ -16,7 +15,6 @@ class Login extends React.Component {
     }
 
     callLoginAPI() {
-
         if (this.username.current != null && this.password.current != null) {
 
             var myHeaders = new Headers();
@@ -57,11 +55,9 @@ class Login extends React.Component {
                         localStorage.setItem("token", token);
 
                         history.push("/");
-
                     }
                 })
                 .catch(error => console.log('error', error));
-
         }
     }
 
@@ -100,7 +96,6 @@ class Login extends React.Component {
                         <p>Not a member yet? <span><Link to="/CreateAccount">Sign up</Link></span></p>
                     </Card.Body>
                 </Card>
-
             </>
         );
     }
