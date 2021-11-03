@@ -8,30 +8,22 @@ import { Link } from 'react-router-dom';
 import history from "./history";
 
 class Login extends React.Component {
-
     constructor(props) {
         super(props);
-
         this.username = React.createRef();
         this.password = React.createRef();
-
         this.callLoginAPI = this.callLoginAPI.bind(this);
     }
 
     async callIdentityAPI() {
 
 
-
-
-
     }
 
     redirectAfterLogin() {
-
         var id = await callIdentityAPI();
         localStorage.setItem("org", id["org"]);
-        history.push("/Home");
-
+        history.push("/");
     }
 
     callLoginAPI() {
