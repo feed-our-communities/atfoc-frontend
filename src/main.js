@@ -2,16 +2,17 @@ import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 
 import Login from './login';
-import CreateAccount from './createAccount';
+import CreateAccount from './CreateAccount';
+import Home from './Home.js';
 import history from './history';
 
 const Main = () => {
     return (
         <Router history={history}>
             <Switch>
-                <Route path='/'><Login /></Route>
-                <Route path='/CreateAccount'><CreateAccount /></Route>
-                <Route path='/Home'><CreateAccount /></Route>
+                <Route exact path='/' component={Home}></Route>
+                <Route exact path='/CreateAccount' component={CreateAccount}></Route>
+                <Route exact path='/login' component={Login}></Route>
             </Switch>
         </Router>
     );
