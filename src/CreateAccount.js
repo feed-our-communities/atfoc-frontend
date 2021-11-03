@@ -5,6 +5,9 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 
+import history from "./history";
+
+
 class CreateAccount extends React.PureComponent {
 
     constructor(props) {

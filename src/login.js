@@ -15,54 +15,52 @@ class Login extends React.Component {
         this.callLoginAPI = this.callLoginAPI.bind(this);
     }
 
-    async callIdentityAPI() {
-
-
-    }
-
-    redirectAfterLogin() {
-        var id = await callIdentityAPI();
-        localStorage.setItem("org", id["org"]);
-        history.push("/");
-    }
-
     callLoginAPI() {
 
         if (this.username.current != null && this.password.current != null) {
 
-            console.log(this.username.current.value);
-
-            var formdata = new FormData();
-            formdata.append("username", this.username.current.value);
-            formdata.append("password", this.password.current.value);
-
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({
+                "email": this.username.current.value,
+                "password": this.password.current.value
+            });
 
             var requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
-                body: formdata,
+                body: raw,
                 redirect: 'follow'
             };
 
             fetch("http://localhost:8000/api/identity/login/", requestOptions)
-                .then(response => response.text())
+                .then(response => {
+
+                    if (response.status === 401) {
+                        alert("Invalid username or password");
+                        return null;
+                        //could make this a state, and show it in the form TODO
+                    } else if (response.status === 400) {
+                        alert("Missing username or password");
+                        return null;
+                    } else if (response.status === 200) {
+                        return response.text();
+                    }
+                    return null;
+                })
                 .then(result => {
 
-                    //TODO error case 
+                    if (result != null) {
 
-                    var token = JSON.parse(result)["token"];
-                    localStorage.setItem("token", token);
+                        var token = JSON.parse(result)["token"];
+                        localStorage.setItem("token", token);
 
-                    redirectAfterLogin();
+                        history.push("/");
 
+                    }
                 })
                 .catch(error => console.log('error', error));
-
-        } else {
-
-            //error TODO 
 
         }
     }
