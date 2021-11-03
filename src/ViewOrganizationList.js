@@ -115,4 +115,4 @@ class ViewOrganizationsList extends React.PureComponent {
 
 }
 
-export default JoinOrg;
+export default ViewOrganizationsList;
