@@ -11,7 +11,6 @@ class OrgRegistration extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.orgName = React.createRef();
         this.address = React.createRef();
         this.orgURL = React.createRef();
