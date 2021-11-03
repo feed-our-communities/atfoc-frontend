@@ -85,7 +85,7 @@ class CreateAccount extends React.PureComponent {
 
                     if (result != null) {
 
-                        history.push("/");
+                        history.push("/login");
 
                     }
 
