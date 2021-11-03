@@ -5,6 +5,9 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 
+import history from "./history";
+
+
 class CreateAccount extends React.PureComponent {
 
     constructor(props) {
@@ -22,10 +25,13 @@ class CreateAccount extends React.PureComponent {
 
     validInput() {
 
-        // username is autovalidated for being an email 
-
         // password and current password are same 
         if (this.password.current.value !== this.confirmPassword.current.value) {
+            //TODO set state to show that username and password arent the same?
+            return false;
+        }
+
+        if (this.password.current.value.length < 8) {
             return false;
         }
 
@@ -46,38 +52,50 @@ class CreateAccount extends React.PureComponent {
             this.firstName.current != null &&
             this.lastName.current != null && this.validInput()) {
 
-            var formdata = new FormData();
-            formdata.append("username", this.username.current.value);
-            formdata.append("password", this.password.current.value);
-            formdata.append("confirmPassword", this.confirmPassword.current.value);
-            formdata.append("firstName", this.firstName.current.value);
-            formdata.append("lastName", this.lastName.current.value);
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({
+                "email": this.username.current.value,
+                "first": this.firstName.current.value,
+                "last": this.password.current.value,
+                "password": this.lastName.current.value
+            });
 
             var requestOptions = {
                 method: 'POST',
-                body: formdata,
+                headers: myHeaders,
+                body: raw,
                 redirect: 'follow'
             };
 
             fetch("http://localhost:8000/api/identity/register/", requestOptions)
-                .then(response => response.text())
+                .then(response => {
+
+                    if (response.status === 400 || response.status === 409) {
+                        alert(response.text());
+                        return null;
+                    } else if (response.status === 200) {
+                        return response.text();
+                    }
+                    return null;
+
+                })
                 .then(result => {
 
-                    //if success go to login page
-                    //TODO 
+                    if (result != null) {
 
-                    history.push("/");
+                        history.push("/login");
+
+                    }
+
+
 
                 })
                 .catch(error => console.log('error', error));
 
-        } else {
-            //error TODO
         }
-
-
     }
-
 
     render() {
         return (
