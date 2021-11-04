@@ -102,12 +102,12 @@ class OrgRegistration extends React.Component {
                                 />
                             </Form.Group>
 
-                            <Button variant="custom" type="button" onClick={this.callOrgRegistrationAPI}>
+                            <Button variant="customOrange" type="button" onClick={this.callOrgRegistrationAPI}>
                                 Submit
                             </Button>
                         </Form>
                         <Link to="/Home">
-                            <Button variant="custom" type="button">
+                            <Button variant="customBlue" type="button">
                                 Back
                             </Button>
                         </Link>

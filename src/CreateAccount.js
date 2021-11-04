@@ -44,7 +44,9 @@ class CreateAccount extends React.PureComponent {
 
     }
 
-    callRegisterAPI() {
+
+
+    async callRegisterAPI() {
 
         if (this.username.current != null &&
             this.password.current != null &&
@@ -58,8 +60,8 @@ class CreateAccount extends React.PureComponent {
             var raw = JSON.stringify({
                 "email": this.username.current.value,
                 "first": this.firstName.current.value,
-                "last": this.password.current.value,
-                "password": this.lastName.current.value
+                "last": this.lastName.current.value,
+                "password": this.password.current.value
             });
 
             var requestOptions = {
@@ -69,30 +71,15 @@ class CreateAccount extends React.PureComponent {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8000/api/identity/register/", requestOptions)
-                .then(response => {
+            var response = await fetch("http://localhost:8000/api/identity/register/", requestOptions);
+            console.log(response);
+            var result = await response.json();
 
-                    if (response.status === 400 || response.status === 409) {
-                        alert(response.text());
-                        return null;
-                    } else if (response.status === 200) {
-                        return response.text();
-                    }
-                    return null;
-
-                })
-                .then(result => {
-
-                    if (result != null) {
-
-                        history.push("/login");
-
-                    }
-
-
-
-                })
-                .catch(error => console.log('error', error));
+            if (response.status === 201) {
+                history.push("/login");
+            } else {
+                alert(result["message"]);
+            }
 
         }
     }
@@ -156,11 +143,11 @@ class CreateAccount extends React.PureComponent {
                                     ref={this.confirmPassword}
                                 />
                             </Form.Group>
-                            <Button variant="custom" type="button" onClick={this.callRegisterAPI}>
+                            <Button variant="customOrange" type="button" onClick={this.callRegisterAPI}>
                                 Create Account
                             </Button>
                         </Form>
-                        <p>Already have an account? <span><Link to="/">Login</Link></span></p>
+                        <p>Already have an account? <span><Link to="/Login">Login</Link></span></p>
                     </Card.Body>
                 </Card>
             </>

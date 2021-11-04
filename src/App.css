@@ -34,9 +34,19 @@ body {
   background-color: #EF8354 !important;
 }
 
-.btn-custom {
+.btn-customOrange {
   font-family: "Open Sans", sans-serif !important;
   background-color: #EF8354 !important;
+  color: white !important;
+  padding: .5rem 4rem !important;
+  font-size: 1rem !important;
+  border-radius: 25px !important;
+  border: none !important;
+}
+
+.btn-customBlue {
+  font-family: "Open Sans", sans-serif !important;
+  background-color: #4F5D75 !important;
   color: white !important;
   padding: .5rem 4rem !important;
   font-size: 1rem !important;
