@@ -44,7 +44,7 @@ class CreateAccount extends React.PureComponent {
 
     }
 
-    callRegisterAPI() {
+    async callRegisterAPI() {
 
         if (this.username.current != null &&
             this.password.current != null &&

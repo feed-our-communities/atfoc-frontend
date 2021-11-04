@@ -15,7 +15,7 @@ class Login extends React.Component {
         this.callLoginAPI = this.callLoginAPI.bind(this);
     }
 
-    callLoginAPI() {
+    async callLoginAPI() {
 
         if (this.username.current != null && this.password.current != null) {
 
