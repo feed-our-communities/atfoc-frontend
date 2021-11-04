@@ -87,7 +87,6 @@ class Login extends React.Component {
                         <p>Not a member yet? <span><Link to="/CreateAccount">Sign up</Link></span></p>
                     </Card.Body>
                 </Card>
-
             </>
         );
     }
