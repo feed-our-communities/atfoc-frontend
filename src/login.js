@@ -39,7 +39,9 @@ class Login extends React.Component {
 
             if (response.status === 200) {
 
-                var token = JSON.parse(result)["token"];
+                console.log(result);
+
+                var token = result["token"];
                 localStorage.setItem("token", token);
 
                 history.push("/");

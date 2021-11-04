@@ -44,6 +44,8 @@ class CreateAccount extends React.PureComponent {
 
     }
 
+
+
     async callRegisterAPI() {
 
         if (this.username.current != null &&
@@ -58,8 +60,8 @@ class CreateAccount extends React.PureComponent {
             var raw = JSON.stringify({
                 "email": this.username.current.value,
                 "first": this.firstName.current.value,
-                "last": this.password.current.value,
-                "password": this.lastName.current.value
+                "last": this.lastName.current.value,
+                "password": this.password.current.value
             });
 
             var requestOptions = {
@@ -70,12 +72,13 @@ class CreateAccount extends React.PureComponent {
             };
 
             var response = await fetch("http://localhost:8000/api/identity/register/", requestOptions);
+            console.log(response);
             var result = await response.json();
 
-            if (response.status == 200) {
+            if (response.status === 201) {
                 history.push("/login");
             } else {
-                alert(result["message"]);
+                alert(result["email"]);
             }
 
         }
