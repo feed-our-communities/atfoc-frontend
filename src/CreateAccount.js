@@ -69,30 +69,14 @@ class CreateAccount extends React.PureComponent {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8000/api/identity/register/", requestOptions)
-                .then(response => {
+            var response = await fetch("http://localhost:8000/api/identity/register/", requestOptions);
+            var result = await response.json();
 
-                    if (response.status === 400 || response.status === 409) {
-                        alert(response.text());
-                        return null;
-                    } else if (response.status === 200) {
-                        return response.text();
-                    }
-                    return null;
-
-                })
-                .then(result => {
-
-                    if (result != null) {
-
-                        history.push("/login");
-
-                    }
-
-
-
-                })
-                .catch(error => console.log('error', error));
+            if (response.status == 200) {
+                history.push("/login");
+            } else {
+                alert(result["message"]);
+            }
 
         }
     }

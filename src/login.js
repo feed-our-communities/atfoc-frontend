@@ -34,33 +34,19 @@ class Login extends React.Component {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8000/api/identity/login/", requestOptions)
-                .then(response => {
+            var response = await fetch("http://localhost:8000/api/identity/login/", requestOptions);
+            var result = await response.json();
 
-                    if (response.status === 401) {
-                        alert("Invalid username or password");
-                        return null;
-                        //could make this a state, and show it in the form TODO
-                    } else if (response.status === 400) {
-                        alert("Missing username or password");
-                        return null;
-                    } else if (response.status === 200) {
-                        return response.text();
-                    }
-                    return null;
-                })
-                .then(result => {
+            if (response.status === 200) {
 
-                    if (result != null) {
+                var token = JSON.parse(result)["token"];
+                localStorage.setItem("token", token);
 
-                        var token = JSON.parse(result)["token"];
-                        localStorage.setItem("token", token);
+                history.push("/");
 
-                        history.push("/");
-
-                    }
-                })
-                .catch(error => console.log('error', error));
+            } else {
+                alert(result["message"]);
+            }
 
         }
     }

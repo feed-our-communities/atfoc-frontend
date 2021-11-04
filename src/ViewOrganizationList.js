@@ -37,27 +37,18 @@ class ViewOrganizationsList extends React.PureComponent {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8000/api/identity/org/", requestOptions)
-            .then(response => {
+        var response = await fetch("http://localhost:8000/api/identity/org/", requestOptions);
+        var result = await response.json();
 
-                if (response.status !== 200) {
-                    return null;
-                }
-                return response.text();
-            })
-            .then(result => {
+        if (response.status === 200) {
 
-                if (result !== null) {
+            this.setState({
+                orgs: result
+            });
 
-                    this.setState({
-                        orgs: result
-                    });
-
-                }
-
-
-            })
-            .catch(error => console.log('error', error));
+        } else {
+            alert(result["message"]);
+        }
 
     }
 
