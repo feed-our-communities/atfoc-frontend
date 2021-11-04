@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 
 import history from "./history";
+import OrgRegistration from './OrgRegistration';
 
 class Login extends React.Component {
     constructor(props) {
@@ -38,8 +39,6 @@ class Login extends React.Component {
             var result = await response.json();
 
             if (response.status === 200) {
-
-                console.log(result);
 
                 var token = result["token"];
                 localStorage.setItem("token", token);
@@ -81,7 +80,7 @@ class Login extends React.Component {
                                     ref={this.password}
                                 />
                             </Form.Group>
-                            <Button variant="custom" type="button" onClick={this.callLoginAPI}>
+                            <Button variant="customOrange" type="button" onClick={this.callLoginAPI}>
                                 Login
                             </Button>
                         </Form>

@@ -143,11 +143,11 @@ class CreateAccount extends React.PureComponent {
                                     ref={this.confirmPassword}
                                 />
                             </Form.Group>
-                            <Button variant="custom" type="button" onClick={this.callRegisterAPI}>
+                            <Button variant="customOrange" type="button" onClick={this.callRegisterAPI}>
                                 Create Account
                             </Button>
                         </Form>
-                        <p>Already have an account? <span><Link to="/">Login</Link></span></p>
+                        <p>Already have an account? <span><Link to="/Login">Login</Link></span></p>
                     </Card.Body>
                 </Card>
             </>
