@@ -78,7 +78,7 @@ class CreateAccount extends React.PureComponent {
             if (response.status === 201) {
                 history.push("/login");
             } else {
-                alert(result["email"]);
+                alert(result["message"]);
             }
 
         }
