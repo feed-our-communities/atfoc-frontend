@@ -30,6 +30,11 @@
   color: #61dafb;
 }
 
+.primaryOrangeBG{
+  background-color: #EF8354;
+  color: white;
+}
+
 .btn-customOrange {
   font-family: "Open Sans", sans-serif !important;
   background-color: #EF8354 !important;

@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav'
 import MyOrg from './components/MyOrg/MyOrg';
 import history from "./history";
+import { COLORS } from "./constants"
 
 /**
  * Parent for the index/home page. 
@@ -18,9 +19,8 @@ import history from "./history";
  * @returns home view
  */
 export default function Home() {
-    
     let token = localStorage.getItem('token')
-    const [orgInfo, setOrgInfo] = useState([])
+    const [accountInfo, setOrgInfo] = useState({'':''})
     const [orgList, setOrgList] = useState([])
     // const [isLoading, setLoading] = useState(false)
     
@@ -30,10 +30,11 @@ export default function Home() {
     }
 
     useEffect(() => {
+        document.body.style.backgroundColor = COLORS.primary_white
         // setLoading(true)
-        getUserOrg(setOrgInfo, token)
-        getOrgList(setOrgList, token)
-    }, [orgInfo, orgList, token])
+        getUserOrg(setOrgInfo)
+        getOrgList(setOrgList)
+    }, [])
 
     // if (isLoading) {
     //     return <p>Loading ...</p>
@@ -41,11 +42,12 @@ export default function Home() {
 
     return(
         <>
-            <Tab.Container id="left-tabs" defaultActiveKey="first">
+            <Tab.Container id="left-tabs" defaultActiveKey="MyOrg">
                 <Row>
-                    <Col sm={3}>
-                        <Nav variant="tabs" className="flex-column">
-                            <Nav.Item>
+                    <Col sm={3} className="primaryOrangeBG" style={{textAlign: "center"}}>
+                        <p style={{fontSize:"1.2em"}}>Welcome, {accountInfo.first} {accountInfo.last}</p>
+                        <Nav variant="pills" className="flex-column">
+                            <Nav.Item >
                                 <Nav.Link eventKey="MyOrg">MyOrg</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
@@ -57,10 +59,14 @@ export default function Home() {
                         </Nav>
                     </Col>
 
-                    <Col sm={9}>
+                    <Col sm={9} className = "content">
                     <Tab.Content>
                         <Tab.Pane eventKey="MyOrg">
-                        <MyOrg/>
+                        <MyOrg
+                            accountInfo = {accountInfo}
+                            orgInfo = {accountInfo.org}
+                            orgList = {orgList}
+                        />
                         </Tab.Pane>
                         <Tab.Pane eventKey="Donations">
                         <h1>Donations component here</h1>
