@@ -1,8 +1,8 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 
-import Login from './login';
-import CreateAccount from './CreateAccount';
+import Login from './components/login';
+import CreateAccount from './components/CreateAccount';
 import Home from './Home.js';
 import history from './history';
 
