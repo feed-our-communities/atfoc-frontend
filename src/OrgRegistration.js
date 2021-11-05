@@ -15,15 +15,17 @@ class OrgRegistration extends React.Component {
         this.orgURL = React.createRef();
         this.email = React.createRef();
         this.phone = React.createRef();
+
+        this.callOrgRegistrationAPI = this.callOrgRegistrationAPI.bind(this);
     }
 
     validInput() {
 
-
-
+        //what required input validation is there? 
+        return true;
     }
 
-    callOrgRegistrationAPI() {
+    async callOrgRegistrationAPI() {
 
         if (this.orgName.current != null &&
             this.address.current != null &&
@@ -32,7 +34,37 @@ class OrgRegistration extends React.Component {
             this.phone.current != null &&
             this.validInput()) {
 
-            //api call
+            var token = localStorage.getItem('token');
+
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Token " + token);
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({
+                "name": this.orgName.current.value,
+                "address": this.address.current.value,
+                "phone": this.orgURL.current.value,
+                "email": this.email.current.value,
+                "url": this.orgURL.current.value
+            });
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("http://localhost:8000/api/identity/application/", requestOptions);
+            var result = await response.json();
+
+            if (response.status === 200) {
+
+                //TODO set showmodal state to false
+
+            } else {
+                alert(result["message"]);
+            }
 
         }
 
@@ -101,12 +133,12 @@ class OrgRegistration extends React.Component {
                                 />
                             </Form.Group>
 
-                            <Button variant="custom" type="button" onClick={this.callOrgRegistrationAPI}>
+                            <Button variant="customOrange" type="button" onClick={this.callOrgRegistrationAPI}>
                                 Submit
                             </Button>
                         </Form>
                         <Link to="/Home">
-                            <Button variant="custom" type="button">
+                            <Button variant="customBlue" type="button">
                                 Back
                             </Button>
                         </Link>
