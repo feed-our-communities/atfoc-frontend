@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// TODO this file/functionality may not be needed
+// TODO this file or functionality may not be needed
 export default function useToken() {
   const getToken = () => {
     const tokenString = localStorage.getItem('token');
