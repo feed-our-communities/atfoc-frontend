@@ -34,6 +34,7 @@ export default function Home() {
         // setLoading(true)
         getUserOrg(setOrgInfo)
         getOrgList(setOrgList)
+        return function cleanup(){}
     }, [])
 
     // if (isLoading) {

@@ -22,8 +22,9 @@ export async function getUserOrg(setOrgInfo) {
     let requestOptions = getStandardRequestOptions()
     let url = SERVER + "/api/identity/info"
     let orgInfo
+    let res
     try {
-        let res = await fetch(url, requestOptions)
+        res = await fetch(url, requestOptions)
         console.log(res)
         orgInfo = await res.json();
     } catch (error) {
@@ -31,15 +32,18 @@ export async function getUserOrg(setOrgInfo) {
         return
     }
     console.log(orgInfo)
-    setOrgInfo(orgInfo)
+    if(res.ok){
+        setOrgInfo(orgInfo)
+    }
 }
 
 export async function getOrgList(setOrgList){
     let requestOptions = getStandardRequestOptions()
     let url = SERVER + "/api/identity/org"
     let orgList;
+    let res;
     try {
-        let res = await fetch(url, requestOptions)
+        res = await fetch(url, requestOptions)
         console.log(res);
         orgList = await res.json()
     } catch (error) {
@@ -47,7 +51,9 @@ export async function getOrgList(setOrgList){
         return
     }
     console.log(orgList)
-    setOrgList(orgList)
+    if(res.ok){
+        setOrgList(orgList)
+    }
 }
 
 export async function joinRequest(orgName, note){
@@ -66,6 +72,5 @@ export async function joinRequest(orgName, note){
         console.log(res);
     } catch (error) {
         console.log(error)
-        return
     }
 }

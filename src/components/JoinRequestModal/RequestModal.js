@@ -13,7 +13,7 @@ export default function RequestModal({orgName, show, setShow}) {
 
     function handleSubmit(){
         joinRequest(orgName, applicationText)
-        alert("Application Submitted!")
+        console.log("Application Submitted!")
         setShow(false)
     }
 

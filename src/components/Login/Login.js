@@ -50,7 +50,7 @@ class Login extends React.Component {
                 history.push("/");
 
             } else {
-                alert(result["message"]);
+                console.log(result["message"]);
             }
         }
     }

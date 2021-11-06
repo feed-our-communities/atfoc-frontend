@@ -59,7 +59,7 @@ export default function OrgRegistration() {
             //TODO set showmodal state to false
     
         } else {
-            alert(result["message"]);
+            console.log(result["message"]);
         }
     }
 

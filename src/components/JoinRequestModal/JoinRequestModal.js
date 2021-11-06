@@ -39,7 +39,7 @@ class joinRequestModal extends React.PureComponent {
                 orgs: result
             });
         } else {
-            alert(result["message"]);
+            console.log(result["message"]);
         }
     }
 
