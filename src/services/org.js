@@ -1,11 +1,12 @@
 import { SERVER } from "../constants"
 
-function getStandardRequestOptions(token){
-    var myHeaders = new Headers()
+export function getStandardRequestOptions(){
+    let token = localStorage.getItem("token")
+    let myHeaders = new Headers()
     myHeaders.append("Content-Type", "application/json")
     myHeaders.append("Authorization", "Token " + token)
 
-    var requestOptions = {
+    let requestOptions = {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow'
@@ -18,8 +19,7 @@ function getStandardRequestOptions(token){
  * Makes sure user has a token
  */
 export async function getUserOrg(setOrgInfo) {
-    let token = localStorage.getItem('token')
-    let requestOptions = getStandardRequestOptions(token)
+    let requestOptions = getStandardRequestOptions()
     let url = SERVER + "/api/identity/info"
     let orgInfo
     try {
@@ -35,8 +35,7 @@ export async function getUserOrg(setOrgInfo) {
 }
 
 export async function getOrgList(setOrgList){
-    let token = localStorage.getItem('token')
-    let requestOptions = getStandardRequestOptions(token)
+    let requestOptions = getStandardRequestOptions()
     let url = SERVER + "/api/identity/org"
     let orgList;
     try {
@@ -51,35 +50,22 @@ export async function getOrgList(setOrgList){
     setOrgList(orgList)
 }
 
-export async function joinOrgRequest(){
-    let token = localStorage.getItem('token')
-    let requestOptions = getStandardRequestOptions(token)
+export async function joinRequest(orgName, note){
+    let requestOptions = getStandardRequestOptions()
+    
+    let raw = JSON.stringify({
+        "Organization Name": orgName,
+        "note": note
+    });
+    requestOptions.body = raw
     requestOptions.method = 'POST'
-    let url = "org/info"; //FIXME
-    let ret
+
+    let url = SERVER + "/api/identity/org"
     try {
-        ret = await (await fetch(url, requestOptions)).json()
+        let res = await fetch(url, requestOptions)
+        console.log(res);
     } catch (error) {
-        console.log(error);
+        console.log(error)
         return
     }
-    // TODO error handling
 }
-
-export async function createOrg(){
-    let token = localStorage.getItem('token')
-    let requestOptions = getStandardRequestOptions(token)
-    requestOptions.method = 'POST'
-    let url = "org/info" //FIXME
-
-    let ret
-    try {
-        ret = await (await fetch(url, requestOptions)).json()
-    } catch (error) {
-        console.log(error);
-        return
-    }
-    // TODO error handling
-}
-
-

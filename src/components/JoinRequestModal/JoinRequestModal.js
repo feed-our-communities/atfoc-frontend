@@ -1,89 +1,91 @@
 import React from 'react';
 import '../../App.css';
+import './JoinRequestModal.css'
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { SERVER } from "../../constants"
+import { getStandardRequestOptions } from "../../services/org"
+import RequestModal from './RequestModal';
 
-class ViewOrganizationsList extends React.PureComponent {
 
+class joinRequestModal extends React.PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
             orgs: [],
-            orgSelection: -1
+            orgSelection: "",
+            show: false
         }
 
         this.search = React.createRef();
-
+        this.applicationText = React.createRef();
         this.callOrgListAPI = this.callOrgListAPI.bind(this);
         this.getOrganizationCards = this.getOrganizationCards.bind(this);
+        this.setShow = this.setShow.bind(this);
+    }
+
+    componentDidMount(){
+        this.callOrgListAPI()
     }
 
     async callOrgListAPI() {
-
-        var token = localStorage.getItem('token');
-
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Token " + token);
-
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
-
-        var response = await fetch(SERVER + "/api/identity/org/", requestOptions);
+        var response = await fetch(SERVER + "/api/identity/organization", getStandardRequestOptions());
         var result = await response.json();
 
         if (response.status === 200) {
-
             this.setState({
                 orgs: result
             });
-
         } else {
             alert(result["message"]);
         }
+    }
 
+    setShow(val){
+        this.setState({show: val})
+    }
+
+    handleOrgSelection(orgName){
+        // TODO validation
+        this.setShow(false)
+        this.setState({orgSelection: orgName})
     }
 
     getOrganizationCards() {
-
         let orgList = this.state.orgs;
 
         var orgCards = [];
 
         for (var i = 0; i < orgList.length; i++) {
+            let orgName = orgList[i]["Organization name"]
             orgCards.push(
                 <Card>
                     <Card.Body>
-
                         <p>{orgList[i]["Organization Id"]}</p>
-                        <p>{orgList[i]["Organization name"]}</p>
-
-                        <Button onClick={function () {
-                            this.setState({
-                                orgSelection: orgList[i]["Organization Id"]
-                            });
-                        }}>
-                            Select
+                        <p>{orgName}</p>
+                        {/* Does this acually pass the current org to each function? */}
+                        <Button onClick={() => this.handleOrgSelection(orgName)}>
+                            apply
                         </Button>
-
                     </Card.Body>
                 </Card>);
         }
-
-        return orgList;
+        return orgCards;
     }
 
     render() {
-        return (<>
-            <Card className="whiteCard">
+        return (
+        <>
+            <RequestModal 
+                orgName= {this.state.orgSelection}
+                show = {this.state.show}
+                setShow = {this.setShow}
+            />
+            <Card className="card-style">
                 <Card.Body>
-                    <h1>Search</h1>
+                    <h3>Search Existing Orgs</h3>
                     <Form>
                         <Form.Group
                             controlId="formSearchOrgList"
@@ -101,7 +103,6 @@ class ViewOrganizationsList extends React.PureComponent {
             </Card>
         </>);
     }
-
 }
 
-export default ViewOrganizationsList;
+export default joinRequestModal;
