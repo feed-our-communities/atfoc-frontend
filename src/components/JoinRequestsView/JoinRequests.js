@@ -1,12 +1,48 @@
 import React from 'react';
+import { useTable } from 'react-table'
 
 /**
- * 
  * @returns join requests view
  */
  export default function JoinRequests() {
 
-    return (<></>);
+    let pendingJoinRequests = await getPendingJoinRequests();
+
+    //TODO set columns and data
+
+    return (<>
+                <h1>Join Requests</h1>
+                <Table columns={columns} data={data} />
+            </>);
+
+ }
+
+/**
+ * Original table structure retrieved from: https://codesandbox.io/s/ewm82?file=/src/App.js:893-1152
+ * 
+ */
+ function Table({ columns, data }) {
+
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
+
+    return (
+        <>
+            <table {...getTableProps()}>
+                <tbody {...getTableBodyProps()}>
+                    {rows.map((row, i) => {
+                        prepareRow(row)
+                        return (
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map(cell => {
+                                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                })}
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </>
+    );
 
  }
 
@@ -16,6 +52,7 @@ import React from 'react';
 
     let result = await callJoinRequestsAPI(pendingStatusNum);
 
+    return result;
  }
 
  async function callJoinRequestsAPI(status) {
@@ -38,9 +75,6 @@ import React from 'react';
     } else {
         console.log(result);
     }
-    
+
     return [];
  }
-
- //Questions
- //only org admins can approve requests? 
