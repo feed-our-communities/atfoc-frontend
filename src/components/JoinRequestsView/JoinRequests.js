@@ -1,62 +1,73 @@
-import React from 'react';
-import { useTable } from 'react-table'
+import React, { useState } from 'react';
+import {Card, Button, Form} from "react-bootstrap";
 
 /**
  * @returns join requests view
  */
  export default function JoinRequests() {
 
-    let pendingJoinRequests = await getPendingJoinRequests();
+    const [pendingRequests, setPendingRequests] = useState([]);
 
-    //TODO set columns and data
+    getPendingJoinRequests(setPendingRequests);
+
+    let requestCards = makeRequestCards(setPendingRequests);
+
+    //let requestCards = makeRequestCards([0, 1, 2]);
 
     return (<>
                 <h1>Join Requests</h1>
-                <Table columns={columns} data={data} />
+                {requestCards}
             </>);
-
  }
 
-/**
- * Original table structure retrieved from: https://codesandbox.io/s/ewm82?file=/src/App.js:893-1152
- * 
- */
- function Table({ columns, data }) {
+ function makeRequestCards(requests) {
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
+    let requestCardList = [];
 
-    return (
-        <>
-            <table {...getTableProps()}>
-                <tbody {...getTableBodyProps()}>
-                    {rows.map((row, i) => {
-                        prepareRow(row)
-                        return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map(cell => {
-                                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                })}
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-        </>
-    );
+    for (let i = 0; i < requests.length; i++) {
+        requestCardList.push(
+            <Card>
+                <Card.Body>
+                    <div class="btn-group">
+                        <Form.Check type="checkbox"/>
+                        <p>Name</p>
+                        <Button variant="customOrange">
+                            Notes
+                        </Button>
+                        <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(1);}}>
+                            Approve
+                        </Button>
+                        <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(2);}}>
+                            Reject
+                        </Button>
+                    </div>
+                </Card.Body>
+            </Card>
+        );
+    }
 
+    console.log(requestCardList);
+     
+    return requestCardList;
  }
 
- async function getPendingJoinRequests() {
+function updateJoinRequestStatus(status) {
+    callUpdateJoinRequestAPI(status);
+}
+
+ async function getPendingJoinRequests(setPendingRequests) {
 
     const pendingStatusNum = 0;
 
-    let result = await callJoinRequestsAPI(pendingStatusNum);
+    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests);
 
     return result;
  }
 
- async function callJoinRequestsAPI(status) {
-    //TODO get token and orgID
+ async function callJoinRequestsAPI(status, setPendingRequests) {
+
+    let token = localStorage.getItem('token');
+    let orgID = 0; //TODO get actual ordID - localStorage? api call?
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token" + token);
@@ -71,10 +82,34 @@ import { useTable } from 'react-table'
     let result = await response.json();
 
     if (response.status === 200 || response.status === 204) {
-        return result;
+        setPendingRequests(result["join_requests"]);
     } else {
         console.log(result);
     }
-
-    return [];
  }
+
+ async function callUpdateJoinRequestAPI(status) {
+
+    let token = localStorage.getItem('token');
+    let requestId = 0; //TODO find actual request Id
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token");
+
+    var formdata = new FormData();
+    formdata.append("request_id", requestId);
+    formdata.append("status", status);
+
+    var requestOptions = {
+    method: 'PATCH',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
+    };
+
+    let result = await fetch("http://localhost:8000/api/identity/joinrequests", requestOptions);
+    let response = await response.json();
+
+    //TODO error handling
+
+}
