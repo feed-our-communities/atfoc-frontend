@@ -1,6 +1,7 @@
 import React from 'react';
 import "./MyOrg.css";
 import { useEffect, useState } from 'react';
+import Button from "react-bootstrap/Button";
 import OrgRegistration from '../OrgRegistration/OrgRegistration';
 import JoinRequestModal from '../JoinRequestModal/JoinRequestModal';
 
@@ -22,6 +23,18 @@ function noOrg(){
                 <OrgRegistration />
             </div>
             <JoinRequestModal/>
+            <div className="smallPad">
+                <Button variant="customOrange">
+                    Manage Members
+                </Button>
+            </div>
+            <div className="smallPad">
+                <Button variant="customOrange">
+                    JoinRequests
+                </Button>
+            </div>
+            
+            
         </>
     )
 }
