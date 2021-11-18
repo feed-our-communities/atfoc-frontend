@@ -18,7 +18,7 @@ export function getStandardRequestOptions(token){
  */
 export async function getUserOrg(setOrgInfo, token) {
     let requestOptions = getStandardRequestOptions(token)
-    let url = SERVER + "/api/identity/info"
+    let url = SERVER + "/api/identity/info/"
     let orgInfo
     let res
     try {
@@ -37,7 +37,7 @@ export async function getUserOrg(setOrgInfo, token) {
 
 export async function getOrgList(setOrgList, token){
     let requestOptions = getStandardRequestOptions(token)
-    let url = SERVER + "/api/identity/org"
+    let url = SERVER + "/api/identity/org/"
     let orgList;
     let res;
     try {
@@ -54,20 +54,23 @@ export async function getOrgList(setOrgList, token){
     }
 }
 
-export async function joinRequest(orgName, note){
-    let requestOptions = getStandardRequestOptions()
-    
+export async function joinRequest(orgID, note, token){
+    let requestOptions = getStandardRequestOptions(token)
     let raw = JSON.stringify({
-        "Organization Name": orgName,
+        "organization": orgID,
+        "status": 0,
         "note": note
     });
     requestOptions.body = raw
     requestOptions.method = 'POST'
 
-    let url = SERVER + "/api/identity/org"
+    let url = SERVER + "/api/identity/joinrequests/"
     try {
         let res = await fetch(url, requestOptions)
         console.log(res);
+        if (res.ok) {
+            alert("Application Submitted!")
+        }
     } catch (error) {
         console.log(error)
     }

@@ -1,19 +1,20 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import '../../App.css';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Modal } from 'react-bootstrap';
 import { useRef} from 'react';
 import { joinRequest } from "../../services/org"
+import { ContextGlobal } from '../../contexts';
 
-export default function RequestModal({orgName, show, setShow}) {
+export default function RequestModal({org, show, setShow}) {
+    const context = useContext(ContextGlobal)
+
     const handleClose = () => setShow(false);
     const applicationText = useRef();
-  
 
     function handleSubmit(){
-        joinRequest(orgName, applicationText)
-        console.log("Application Submitted!")
+        joinRequest(org.id, applicationText, context.token)
         setShow(false)
     }
 
@@ -26,15 +27,15 @@ export default function RequestModal({orgName, show, setShow}) {
           keyboard={false}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Modal title</Modal.Title>
+            <Modal.Title>Join Request</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="request">
-                <Form.Label>Request Form</Form.Label>
+                <Form.Label>Join Request Form for {org.name}</Form.Label>
                 <Form.Control 
                     as="textarea"
-                    placeholder="Organization URL"
+                    placeholder="Write information related to your join request here"
                     ref={applicationText}
                     rows={3} />
                 </Form.Group>

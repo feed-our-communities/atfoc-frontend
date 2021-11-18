@@ -7,15 +7,19 @@ import Card from "react-bootstrap/Card";
 import { SERVER } from "../../constants"
 import { getStandardRequestOptions } from "../../services/org"
 import RequestModal from './RequestModal';
+import ContextGlobal from '../../contexts'
 
 
 class joinRequestModal extends React.PureComponent {
+    static contextType = ContextGlobal
+
     constructor(props) {
         super(props);
 
         this.state = {
             orgs: [],
-            orgSelection: "",
+            filteredOrgs: [],
+            orgSelection: {name: "", id: ""},
             show: false
         }
 
@@ -31,10 +35,10 @@ class joinRequestModal extends React.PureComponent {
     }
 
     async callOrgListAPI() {
-        var response = await fetch(SERVER + "/api/identity/organization", getStandardRequestOptions());
+        var response = await fetch(SERVER + "/api/identity/organization", getStandardRequestOptions(this.context.token));
         var result = await response.json();
 
-        if (response.status === 200) {
+        if (response.ok) {
             this.setState({
                 orgs: result
             });
@@ -42,15 +46,31 @@ class joinRequestModal extends React.PureComponent {
             console.log(result["message"]);
         }
     }
+    
+    filterOrgs(){
+        let search = this.search.current.toLowerCase()
+        let new_orgs = []
+        if(!search){
+            return
+        }
+        let orgs = JSON.parse(JSON.stringify(this.state.orgs)) // deep copy
+        for (const org of orgs){
+            if (org['Organization name'].toLowerCase().includes(search)){
+                new_orgs.push(org)
+            }
+        }
+        this.setState({filteredOrgs: new_orgs})
+    }
 
     setShow(val){
         this.setState({show: val})
     }
 
-    handleOrgSelection(orgName){
+    handleOrgSelection(orgName,orgID){
+        let org = {name: orgName, id: orgID}
         // TODO validation
-        this.setShow(false)
-        this.setState({orgSelection: orgName})
+        this.setShow(true) // show the join request form
+        this.setState({orgSelection: org})
     }
 
     getOrganizationCards() {
@@ -60,15 +80,18 @@ class joinRequestModal extends React.PureComponent {
 
         for (var i = 0; i < orgList.length; i++) {
             let orgName = orgList[i]["Organization name"]
+            let orgID = orgList[i]["Organization Id"]
             orgCards.push(
                 <Card>
                     <Card.Body>
-                        <p>{orgList[i]["Organization Id"]}</p>
-                        <p>{orgName}</p>
-                        {/* Does this acually pass the current org to each function? */}
-                        <Button onClick={() => this.handleOrgSelection(orgName)}>
-                            apply
-                        </Button>
+                        <span style={{display: "inline"}}>
+                            <p>{orgName}</p>
+                            <p> ({orgID}) </p>
+                            {/* TODO Does this acually pass the current org to each function? */}
+                            <Button onClick={() => this.handleOrgSelection(orgName, orgID)}>
+                                Join
+                            </Button>
+                        </span>
                     </Card.Body>
                 </Card>);
         }
@@ -79,7 +102,7 @@ class joinRequestModal extends React.PureComponent {
         return (
         <>
             <RequestModal 
-                orgName= {this.state.orgSelection}
+                org= {this.state.orgSelection}
                 show = {this.state.show}
                 setShow = {this.setShow}
             />
@@ -90,6 +113,7 @@ class joinRequestModal extends React.PureComponent {
                         <Form.Group
                             controlId="formSearchOrgList"
                             className="mb-3"
+                            onChange={() => this.filterOrgs()}
                         >
                             <Form.Control
                                 type="text"
@@ -97,7 +121,9 @@ class joinRequestModal extends React.PureComponent {
                                 ref={this.search}
                             />
                         </Form.Group>
-                        {this.getOrganizationCards}
+                        <div className="org-list">
+                            {this.getOrganizationCards}
+                        </div>
                     </Form>
                 </Card.Body>
             </Card>
