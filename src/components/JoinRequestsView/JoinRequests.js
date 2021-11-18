@@ -11,12 +11,11 @@ import './JoinRequests.css'
 
     getPendingJoinRequests(setPendingRequests);
 
-    let requestCards = makeRequestCards(setPendingRequests);
+    let requestCards = makeRequestCards(pendingRequests);
 
     //let requestCards = makeRequestCards([0, 1, 2]);
 
     return (<>
-                <h1>Join Requests</h1>
                 {requestCards}
             </>);
  }
@@ -113,8 +112,8 @@ function updateJoinRequestStatus(status) {
     redirect: 'follow'
     };
 
-    let result = await fetch("http://localhost:8000/api/identity/joinrequests", requestOptions);
-    let response = await response.json();
+    let response = await fetch("http://localhost:8000/api/identity/joinrequests", requestOptions);
+    let result = await response.json();
 
     //TODO error handling
 

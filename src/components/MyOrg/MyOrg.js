@@ -7,6 +7,7 @@ import JoinRequestModal from '../JoinRequestModal/JoinRequestModal';
 import Modal from "react-bootstrap/Modal";
 
 import JoinRequests from '../JoinRequestsView/JoinRequests';
+import ManageMembers from '../ManageMembers/ManageMembers';
 
 function dispOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests){
     //TODO pull out org info
@@ -70,13 +71,35 @@ export default function MyOrg({userInfo, orgInfo, orgList}){
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title id="join-requests">Register an Organization</Modal.Title>
+            <Modal.Title id="join-requests">Manage Join Requests</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <JoinRequests/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseJoinRequests}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={showManageMembers}
+          onHide={handleCloseManageMembers}
+          backdrop="static"
+          keyboard={false}
+          size="lg"
+          aria-labelledby="manage-members"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="manage-members">Manage Members</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ManageMembers/>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseManageMembers}>
               Close
             </Button>
           </Modal.Footer>
