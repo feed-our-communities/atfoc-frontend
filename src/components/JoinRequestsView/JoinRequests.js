@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {Card, Button, Form} from "react-bootstrap";
+import './JoinRequests.css'
 
 /**
  * @returns join requests view
@@ -29,17 +30,22 @@ import {Card, Button, Form} from "react-bootstrap";
             <Card>
                 <Card.Body>
                     <div class="btn-group">
-                        <Form.Check type="checkbox"/>
                         <p>Name</p>
-                        <Button variant="customOrange">
-                            Notes
-                        </Button>
-                        <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(1);}}>
-                            Approve
-                        </Button>
-                        <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(2);}}>
-                            Reject
-                        </Button>
+                        <div class="buttonPad">
+                            <Button variant="customOrange">
+                                Notes
+                            </Button>
+                        </div>
+                        <div class="buttonPad">
+                            <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(1);}}>
+                                Approve
+                            </Button>
+                        </div>
+                        <div class="buttonPad">
+                            <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(2);}}>
+                                Reject
+                            </Button>
+                        </div>
                     </div>
                 </Card.Body>
             </Card>

@@ -6,6 +6,7 @@ import OrgRegistration from '../OrgRegistration/OrgRegistration';
 import JoinRequestModal from '../JoinRequestModal/JoinRequestModal';
 import Modal from "react-bootstrap/Modal";
 
+import JoinRequests from '../JoinRequestsView/JoinRequests';
 
 function dispOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests){
     //TODO pull out org info
@@ -39,9 +40,9 @@ function noOrg(){
 }
 
 function isInOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests){
-    if(!orgInfo){
-        return noOrg()
-    }
+    // if(!orgInfo){
+    //     return noOrg()
+    // }
     return dispOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests)
 }
 
@@ -51,11 +52,36 @@ export default function MyOrg({userInfo, orgInfo, orgList}){
 
     const handleShowManageMembers = () => setShowManageMembers(true);
     const handleShowJoinRequests = () => setShowJoinRequests(true);
+    const handleCloseManageMembers = () => setShowManageMembers(false);
+    const handleCloseJoinRequests = () => setShowJoinRequests(false);
 
     console.log("heheheh", {userInfo});
     return(
         <>
             {isInOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests)}
+
+        <Modal
+          show={showJoinRequests}
+          onHide={handleCloseJoinRequests}
+          backdrop="static"
+          keyboard={false}
+          size="lg"
+          aria-labelledby="join-requests"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="join-requests">Register an Organization</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <JoinRequests/>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseJoinRequests}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         </>
     )
 }
