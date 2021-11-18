@@ -9,8 +9,9 @@ import {Card, Button, Tabs, Tab} from "react-bootstrap";
     const [regMembers, setRegMembers] = useState([]);
     const [admins, setAdmins] = useState([]);
 
-    getUsers(setRegMembers, false);
-    getUsers(setAdmins, true);
+    getUsers(regMembers, admins, setRegMembers, false);
+    getUsers(regMembers, admins, setAdmins, true);
+
 
     let regMemberCards = makeUserCards(regMembers, false);
     let adminCards = makeUserCards(admins, true)
@@ -27,7 +28,7 @@ import {Card, Button, Tabs, Tab} from "react-bootstrap";
             </>);
  }
 
- async function getUsers(setUsers, getAdmin) {
+ async function getUsers(regMembers, admins, setUsers, getAdmin) {
 
     //TODO get orgID and token 
     let token = 0;
@@ -48,9 +49,13 @@ import {Card, Button, Tabs, Tab} from "react-bootstrap";
     if (response.status === 200) {
 
         if (getAdmin) {
-            setUsers(result["admins"]);
+            if (admins !== result["admins"]) {
+                setUsers(result["admins"]);
+            }
         } else {
-            setUsers(result["members"]);
+            if (regMembers !== result["members"]) {
+                setUsers(result["members"]);
+            }
         }
 
     } else if (response.status === 204) {
@@ -62,6 +67,8 @@ import {Card, Button, Tabs, Tab} from "react-bootstrap";
  }
 
  function makeUserCards(users, isAdmin) {
+
+    console.log(users);
 
     let cards = [];
 
@@ -102,13 +109,13 @@ import {Card, Button, Tabs, Tab} from "react-bootstrap";
  //TODO fill in these functions 
 
  function removeAdmin() {
-
+    //currently have no info on this call
  }
 
  function makeAdmin() {
-
+     //currently have no info on this call
 }
 
 function removeMember() {
-
+     //currently have no info on this call
 }
