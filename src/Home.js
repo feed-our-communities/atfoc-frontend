@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import './App.css';
 import './Home.css';
-import { useEffect, useState } from 'react';
 import { getOrgList, getUserOrg } from './services/org'
 import Tab from "react-bootstrap/Tab";
 import Col from 'react-bootstrap/Col';
@@ -9,7 +8,8 @@ import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav'
 import MyOrg from './components/MyOrg/MyOrg';
 import history from "./history";
-import { COLORS } from "./constants"
+import { COLORS } from "./constants";
+import { ContextGlobal } from './contexts';
 
 /**
  * Parent for the index/home page. 
@@ -19,27 +19,28 @@ import { COLORS } from "./constants"
  * @returns home view
  */
 export default function Home() {
-    let token = localStorage.getItem('token')
+    const context = useContext(ContextGlobal)
+    // get user token
+    // empty token evaluates to false
+    if (!context.token) {
+        let token = localStorage.getItem('token')
+        if(!token){
+            history.push('/login')
+        }else{
+            // TODO consider validating token
+            context.setToken(token)
+        }
+    }
+
     const [accountInfo, setOrgInfo] = useState({'':''})
     const [orgList, setOrgList] = useState([])
-    // const [isLoading, setLoading] = useState(false)
-    
-    // make sure user is logged in, else send to login
-    if (!token) {
-        history.push('/login')
-    }
 
     useEffect(() => {
         document.body.style.backgroundColor = COLORS.primary_white
-        // setLoading(true)
-        getUserOrg(setOrgInfo)
-        getOrgList(setOrgList)
-        return function cleanup(){}
-    }, [])
 
-    // if (isLoading) {
-    //     return <p>Loading ...</p>
-    // }
+        getUserOrg(setOrgInfo, context.token)
+        getOrgList(setOrgList, context.token)
+    }, [context.token])
 
     return(
         <>

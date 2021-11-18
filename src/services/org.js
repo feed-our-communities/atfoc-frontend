@@ -1,7 +1,6 @@
 import { SERVER } from "../constants"
 
-export function getStandardRequestOptions(){
-    let token = localStorage.getItem("token")
+export function getStandardRequestOptions(token){
     let myHeaders = new Headers()
     myHeaders.append("Content-Type", "application/json")
     myHeaders.append("Authorization", "Token " + token)
@@ -16,10 +15,9 @@ export function getStandardRequestOptions(){
 
 /**
  * Gets the organization info associated with this user.
- * Makes sure user has a token
  */
-export async function getUserOrg(setOrgInfo) {
-    let requestOptions = getStandardRequestOptions()
+export async function getUserOrg(setOrgInfo, token) {
+    let requestOptions = getStandardRequestOptions(token)
     let url = SERVER + "/api/identity/info"
     let orgInfo
     let res
@@ -37,8 +35,8 @@ export async function getUserOrg(setOrgInfo) {
     }
 }
 
-export async function getOrgList(setOrgList){
-    let requestOptions = getStandardRequestOptions()
+export async function getOrgList(setOrgList, token){
+    let requestOptions = getStandardRequestOptions(token)
     let url = SERVER + "/api/identity/org"
     let orgList;
     let res;

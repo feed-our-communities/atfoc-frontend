@@ -7,8 +7,11 @@ import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 import history from "../../history";
 import { SERVER, COLORS } from "../../constants";
+import { ContextGlobal } from '../../contexts';
 
 class Login extends React.Component {
+    static contextType = ContextGlobal // makes context accessible through this.context
+
     constructor(props) {
         super(props);
         this.username = React.createRef();
@@ -46,6 +49,7 @@ class Login extends React.Component {
 
                 var token = result["token"];
                 localStorage.setItem("token", token);
+                this.context.setToken(token)
 
                 history.push("/");
 
