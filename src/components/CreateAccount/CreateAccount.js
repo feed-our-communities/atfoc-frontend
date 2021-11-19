@@ -91,7 +91,7 @@ class CreateAccount extends React.PureComponent {
                         <h1>Create An Account</h1>
                         <Form>
                             <Form.Group
-                                controlId="formLoginUsername"
+                                controlId="formCreateAccountUsername"
                                 className="mb-3"
                             >
                                 <Form.Control
@@ -102,7 +102,7 @@ class CreateAccount extends React.PureComponent {
                             </Form.Group>
 
                             <Form.Group
-                                controlId="formFirstName"
+                                controlId="formCreateAccountFirstName"
                                 className="mb-3"
                             >
                                 <Form.Control
@@ -112,7 +112,7 @@ class CreateAccount extends React.PureComponent {
                                 />
                             </Form.Group>
                             <Form.Group
-                                controlId="formLastName"
+                                controlId="formCreateAccountLastName"
                                 className="mb-3"
                             >
                                 <Form.Control
@@ -123,7 +123,7 @@ class CreateAccount extends React.PureComponent {
                             </Form.Group>
 
                             <Form.Group
-                                controlId="formLoginPassword"
+                                controlId="formCreateAccountPassword"
                                 className="mb-3"
                             >
                                 <Form.Control
@@ -133,7 +133,7 @@ class CreateAccount extends React.PureComponent {
                                 />
                             </Form.Group>
                             <Form.Group
-                                controlId="formLoginConfirmPassword"
+                                controlId="formCreateAccountConfirmPassword"
                                 className="mb-3"
                             >
                                 <Form.Control
@@ -142,7 +142,7 @@ class CreateAccount extends React.PureComponent {
                                     ref={this.confirmPassword}
                                 />
                             </Form.Group>
-                            <Button variant="customOrange" type="button" onClick={this.callRegisterAPI}>
+                            <Button id="createAccountButton" variant="customOrange" type="button" onClick={this.callRegisterAPI}>
                                 Create Account
                             </Button>
                         </Form>
