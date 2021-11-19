@@ -5,7 +5,8 @@ import { getOrgList, getUserOrg } from './services/org'
 import Tab from "react-bootstrap/Tab";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Nav from 'react-bootstrap/Nav'
+import Nav from 'react-bootstrap/Nav';
+import Button from "react-bootstrap/Button";
 import MyOrg from './components/MyOrg/MyOrg';
 import history from "./history";
 import { COLORS } from "./constants";
@@ -59,6 +60,12 @@ export default function Home() {
                                 <Nav.Link eventKey="Requests">Requests</Nav.Link>
                             </Nav.Item>
                         </Nav>
+                        <Button id="logoutButton" variant="customBlue" type="button" onClick={function() {
+                            context.setToken(undefined);
+                            history.push("/login");
+                        }}> 
+                            Logout
+                        </Button>
                     </Col>
 
                     <Col sm={9} className = "content">
@@ -84,3 +91,10 @@ export default function Home() {
     )
 }
 
+function logoutHelper() {
+
+   
+
+    //navigate and clear token 
+
+}
