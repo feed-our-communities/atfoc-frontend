@@ -87,7 +87,7 @@ class Login extends React.Component {
                                     ref={this.password}
                                 />
                             </Form.Group>
-                            <Button variant="customOrange" type="button" onClick={this.callLoginAPI}>
+                            <Button id="loginButton" variant="customOrange" type="button" onClick={this.callLoginAPI}>
                                 Login
                             </Button>
                         </Form>

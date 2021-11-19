@@ -10,6 +10,8 @@ var assert = require('assert');
         await driver.findElement(By.id('formLoginUsername')).sendKeys('FakeLogin', Key.ENTER);
         await driver.findElement(By.id('formLoginPassword')).sendKeys('FakePassword', Key.ENTER);
 
+        await driver.findElement(By.id('loginButton')).click();
+
         let curUrl = await driver.getCurrentUrl();
 
         assert.equal(curUrl, "http://localhost:3000/login", "Expected url after bad login was");
@@ -20,3 +22,6 @@ var assert = require('assert');
         await driver.quit();
     }
 })();
+
+
+
