@@ -55,6 +55,17 @@
   border: none !important;
 }
 
+.btn-customBottomBlue {
+  font-family: "Open Sans", sans-serif !important;
+  background-color: #4F5D75 !important;
+  color: white !important;
+  margin-top: 300% !important;
+  padding: .5rem 4rem !important;
+  font-size: 1rem !important;
+  border-radius: 25px !important;
+  border: none !important;
+}
+
 .whiteCard {
   margin-top: 15vh;
   margin-left: auto !important;
