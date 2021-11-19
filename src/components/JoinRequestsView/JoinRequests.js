@@ -7,12 +7,12 @@ import { ContextGlobal } from '../../contexts';
 /**
  * @returns join requests view
  */
- export default function JoinRequests() {
+ export default function JoinRequests(orgID) {
     const context = useContext(ContextGlobal);
 
     const [pendingRequests, setPendingRequests] = useState([]);
 
-    getPendingJoinRequests(setPendingRequests, context.token);
+    getPendingJoinRequests(setPendingRequests, context.token, orgID);
 
     let requestCards = makeRequestCards(pendingRequests, context.token);
 
@@ -73,18 +73,16 @@ function updateJoinRequestStatus(status, token) {
     callUpdateJoinRequestAPI(status, token);
 }
 
- async function getPendingJoinRequests(setPendingRequests, token) {
+ async function getPendingJoinRequests(setPendingRequests, token, orgID) {
 
     const pendingStatusNum = 0;
 
-    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests, token);
+    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests, token, orgID);
 
     return result;
  }
 
- async function callJoinRequestsAPI(status, setPendingRequests, token) {
-
-    let orgID = 0; //TODO get actual ordID - localStorage? api call?
+ async function callJoinRequestsAPI(status, setPendingRequests, token, orgID) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token" + token);

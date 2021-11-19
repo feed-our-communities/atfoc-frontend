@@ -132,11 +132,3 @@ export default function Home() {
         </>
     )
 }
-
-function logoutHelper() {
-
-   
-
-    //navigate and clear token 
-
-}

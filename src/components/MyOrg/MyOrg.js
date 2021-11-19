@@ -60,7 +60,7 @@ function DispAdmin({accountInfo}){
             <Modal.Title id="join-requests">Manage Join Requests</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <JoinRequests/>
+            <JoinRequests orgID = {accountInfo.organization.id}/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseJoinRequests}>
