@@ -115,7 +115,7 @@ function isInOrg(accountInfo){
         {dispOrg(accountInfo.organization)}
         <DispAdmin accountInfo = {accountInfo}/>
       </>
-    )
+    )  
 }
 
 export default function MyOrg({accountInfo}){
