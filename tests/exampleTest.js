@@ -1,17 +1,15 @@
 const {Builder, By, Key, until} = require('selenium-webdriver');
+var assert = require('assert');
 
 (async function example() {
     let driver = await new Builder().forBrowser('chrome').build();
     try {
         // Navigate to Url
-        await driver.get('https://www.google.com');
+        await driver.get('http://localhost:3000/');
 
-        // Enter text "cheese" and perform keyboard action "Enter"
-        await driver.findElement(By.name('q')).sendKeys('cheese', Key.ENTER);
+        let curUrl = await driver.getCurrentUrl();
 
-        let firstResult = await driver.wait(until.elementLocated(By.css('h3')), 10000);
-
-        console.log(await firstResult.getAttribute('textContent'));
+        assert.equal(curUrl, "http://localhost:3000/login", "Expected url without token was");
     }
     finally{
         await driver.quit();
