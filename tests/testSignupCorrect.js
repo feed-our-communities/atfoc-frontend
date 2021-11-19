@@ -15,6 +15,8 @@ var assert = require('assert');
 
         await driver.findElement(By.id('createAccountButton')).click();
 
+        await driver.sleep(5000);
+
         let curUrl = await driver.getCurrentUrl();
 
         assert.equal(curUrl, "http://localhost:3000/", "Expected url after good login was");

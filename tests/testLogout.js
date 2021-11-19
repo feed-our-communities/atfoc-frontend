@@ -5,6 +5,7 @@ var assert = require('assert');
     let driver = await new Builder().forBrowser('chrome').build();
     try {
         // Navigate to Url
+
         await driver.get('http://localhost:3000/login');
 
         let username = "test@domain.com";
@@ -15,11 +16,11 @@ var assert = require('assert');
 
         await driver.findElement(By.id('loginButton')).click();
 
-        await driver.sleep(5000)
+        await driver.findElement(By.id('logoutButton')).click();
 
         let curUrl = await driver.getCurrentUrl();
 
-        assert.equal(curUrl, "http://localhost:3000/", "Expected url after good login was");
+        assert.equal(curUrl, "http://localhost:3000/login", "Expected url after logout was");
 
     }
     finally{

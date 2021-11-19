@@ -7,6 +7,8 @@ var assert = require('assert');
         // Navigate to Url
         await driver.get('http://localhost:3000/');
 
+        await driver.sleep(5000)
+
         let curUrl = await driver.getCurrentUrl();
 
         assert.equal(curUrl, "http://localhost:3000/login", "Expected url without token was");
