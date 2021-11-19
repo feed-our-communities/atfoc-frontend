@@ -60,7 +60,6 @@ export default function MyOrg({userInfo, orgInfo, orgList}){
     return(
         <>
             {isInOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests)}
-
         <Modal
           show={showJoinRequests}
           onHide={handleCloseJoinRequests}

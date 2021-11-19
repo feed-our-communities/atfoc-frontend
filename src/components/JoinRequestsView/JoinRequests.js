@@ -1,47 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {Card, Button, Form} from "react-bootstrap";
 import './JoinRequests.css'
+
+import { ContextGlobal } from '../../contexts';
 
 /**
  * @returns join requests view
  */
  export default function JoinRequests() {
+    const context = useContext(ContextGlobal);
 
     const [pendingRequests, setPendingRequests] = useState([]);
 
-    getPendingJoinRequests(setPendingRequests);
+    getPendingJoinRequests(setPendingRequests, context.token);
 
-    let requestCards = makeRequestCards(pendingRequests);
-
-    //let requestCards = makeRequestCards([0, 1, 2]);
+    let requestCards = makeRequestCards(pendingRequests, context.token);
 
     return (<>
                 {requestCards}
             </>);
  }
 
- function makeRequestCards(requests) {
+ function makeRequestCards(requests, token) {
+
+    //TODO add notes  
+    const approveNumber = 1;
+    const rejectNumber = 2;
 
     let requestCardList = [];
 
     for (let i = 0; i < requests.length; i++) {
+
+        //should always have both first and last
+        let name = requests[i].user.first_name + requests[i].user.last_name;
+
         requestCardList.push(
             <Card>
                 <Card.Body>
                     <div class="btn-group">
-                        <p>Name</p>
+                        <p>{name}</p>
                         <div class="buttonPad">
-                            <Button variant="customOrange">
+                            <Button variant="customOrange" type="button">
                                 Notes
                             </Button>
                         </div>
                         <div class="buttonPad">
-                            <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(1);}}>
+                            <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(approveNumber, token);}}>
                                 Approve
                             </Button>
                         </div>
                         <div class="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(2);}}>
+                            <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(rejectNumber, token);}}>
                                 Reject
                             </Button>
                         </div>
@@ -51,27 +60,30 @@ import './JoinRequests.css'
         );
     }
 
-    console.log(requestCardList);
+    if (requestCardList.length === 0) {
+        return (
+            <p>No Active Join Requests</p>
+        )
+    }
      
     return requestCardList;
  }
 
-function updateJoinRequestStatus(status) {
-    callUpdateJoinRequestAPI(status);
+function updateJoinRequestStatus(status, token) {
+    callUpdateJoinRequestAPI(status, token);
 }
 
- async function getPendingJoinRequests(setPendingRequests) {
+ async function getPendingJoinRequests(setPendingRequests, token) {
 
     const pendingStatusNum = 0;
 
-    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests);
+    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests, token);
 
     return result;
  }
 
- async function callJoinRequestsAPI(status, setPendingRequests) {
+ async function callJoinRequestsAPI(status, setPendingRequests, token) {
 
-    let token = localStorage.getItem('token');
     let orgID = 0; //TODO get actual ordID - localStorage? api call?
 
     var myHeaders = new Headers();
@@ -93,9 +105,8 @@ function updateJoinRequestStatus(status) {
     }
  }
 
- async function callUpdateJoinRequestAPI(status) {
+ async function callUpdateJoinRequestAPI(status, token) {
 
-    let token = localStorage.getItem('token');
     let requestId = 0; //TODO find actual request Id
 
     var myHeaders = new Headers();

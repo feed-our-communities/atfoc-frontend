@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {Card, Button, Tabs, Tab} from "react-bootstrap";
+
+import { ContextGlobal } from '../../contexts';
 
 /**
  * @returns manage members  view
  */
  export default function ManageMembers() {
+    const context = useContext(ContextGlobal);
 
     const [regMembers, setRegMembers] = useState([]);
     const [admins, setAdmins] = useState([]);
 
-    getUsers(regMembers, admins, setRegMembers, false);
-    getUsers(regMembers, admins, setAdmins, true);
-
+    getUsers(regMembers, admins, setRegMembers, false, context.token);
+    getUsers(regMembers, admins, setAdmins, true, context.token);
 
     let regMemberCards = makeUserCards(regMembers, false);
-    let adminCards = makeUserCards(admins, true)
+    let adminCards = makeUserCards(admins, true);
 
     return (<>
                 <Tabs defaultActiveKey="members">
@@ -28,10 +30,9 @@ import {Card, Button, Tabs, Tab} from "react-bootstrap";
             </>);
  }
 
- async function getUsers(regMembers, admins, setUsers, getAdmin) {
+ async function getUsers(regMembers, admins, setUsers, getAdmin, token) {
 
-    //TODO get orgID and token 
-    let token = 0;
+    //TODO get orgID
     let orgID = 0;
 
     var myHeaders = new Headers();
