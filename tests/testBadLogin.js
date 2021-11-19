@@ -12,6 +12,8 @@ var assert = require('assert');
 
         await driver.findElement(By.id('loginButton')).click();
 
+        await driver.sleep(5000);
+
         let curUrl = await driver.getCurrentUrl();
 
         assert.equal(curUrl, "http://localhost:3000/login", "Expected url after bad login was");
