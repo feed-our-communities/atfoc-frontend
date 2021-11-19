@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { SERVER } from "../../constants"
 import { useEffect, useState, useRef} from 'react';
+import JoinRequests from '../JoinRequestsView/JoinRequests';
 
 function validateInput() {
     //what required input validation is there? 
