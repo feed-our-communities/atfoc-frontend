@@ -41,9 +41,9 @@ function noOrg(){
 }
 
 function isInOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests){
-    // if(!orgInfo){
-    //     return noOrg()
-    // }
+    if(!orgInfo){
+        return noOrg()
+    }
     return dispOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests)
 }
 
@@ -56,54 +56,52 @@ export default function MyOrg({userInfo, orgInfo, orgList}){
     const handleCloseManageMembers = () => setShowManageMembers(false);
     const handleCloseJoinRequests = () => setShowJoinRequests(false);
 
-    console.log("heheheh", {userInfo});
     return(
         <>
-            {isInOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests)}
-        <Modal
-          show={showJoinRequests}
-          onHide={handleCloseJoinRequests}
-          backdrop="static"
-          keyboard={false}
-          size="lg"
-          aria-labelledby="join-requests"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="join-requests">Manage Join Requests</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <JoinRequests/>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseJoinRequests}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          {isInOrg(orgInfo, handleShowManageMembers, handleShowJoinRequests)}
+          <Modal
+            show={showJoinRequests}
+            onHide={handleCloseJoinRequests}
+            backdrop="static"
+            keyboard={false}
+            size="lg"
+            aria-labelledby="join-requests"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="join-requests">Manage Join Requests</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <JoinRequests/>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseJoinRequests}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
 
-        <Modal
-          show={showManageMembers}
-          onHide={handleCloseManageMembers}
-          backdrop="static"
-          keyboard={false}
-          size="lg"
-          aria-labelledby="manage-members"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="manage-members">Manage Members</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <ManageMembers/>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseManageMembers}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
+          <Modal
+            show={showManageMembers}
+            onHide={handleCloseManageMembers}
+            backdrop="static"
+            keyboard={false}
+            size="lg"
+            aria-labelledby="manage-members"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="manage-members">Manage Members</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ManageMembers/>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseManageMembers}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </>
     )
 }
