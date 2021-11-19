@@ -85,7 +85,7 @@ class joinRequestModal extends React.PureComponent {
             let orgName = orgList[i].name
             let orgID = orgList[i].id
             orgCards.push(
-                <Card>
+                <Card key={i}>
                     <Card.Body>
                         <Container >
                             <Row className="list-body">
