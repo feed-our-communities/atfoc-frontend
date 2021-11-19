@@ -60,7 +60,7 @@ export default function Home() {
                                 <Nav.Link eventKey="Requests">Requests</Nav.Link>
                             </Nav.Item>
                         </Nav>
-                        <Button id="logoutButton" variant="customBlue" type="button" onClick={function() {
+                        <Button id="logoutButton" variant="customBottomBlue" type="button" onClick={function() {
                             context.setToken(undefined);
                             history.push("/login");
                         }}> 
