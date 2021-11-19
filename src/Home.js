@@ -62,6 +62,12 @@ export default function Home() {
                                     <Nav.Link eventKey="MyOrg">Org Registration</Nav.Link>
                                 </Nav.Item>
                             </Nav>
+                            <Button id="logoutButton" variant="customBottomBlue" type="button" onClick={function() {
+                                context.setToken(undefined);
+                                history.push("/login");
+                            }}> 
+                                Logout
+                            </Button>
                         </Col>
 
                         <Col sm={9} className = "content">
