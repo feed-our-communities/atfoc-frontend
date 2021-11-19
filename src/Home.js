@@ -64,6 +64,7 @@ export default function Home() {
                             </Nav>
                             <Button id="logoutButton" variant="customBottomBlue" type="button" onClick={function() {
                                 context.setToken(undefined);
+                                localStorage.removeItem('token');
                                 history.push("/login");
                             }}> 
                                 Logout
