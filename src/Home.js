@@ -20,27 +20,34 @@ import { ContextGlobal } from './contexts';
  */
 export default function Home() {
     const context = useContext(ContextGlobal)
-    // get user token
-    // empty token evaluates to false
-    if (!context.token) {
-        let token = localStorage.getItem('token')
-        if(!token){
-            history.push('/login')
-        }else{
-            // TODO consider validating token
-            context.setToken(token)
-        }
-    }
-
     const [accountInfo, setOrgInfo] = useState({'':''})
     const [orgList, setOrgList] = useState([])
 
+    useEffect(() =>{
+        // get user token
+        // empty token evaluates to false
+        if (!context.token) {
+            let stored_token = localStorage.getItem('token')
+            if(!stored_token){
+                history.push('/login')
+            }else{
+                context.setToken(stored_token)
+            }
+        }
+        // TODO consider validating token
+    }, [context])
+
     useEffect(() => {
         document.body.style.backgroundColor = COLORS.primary_white
-
-        getUserOrg(setOrgInfo, context.token)
-        getOrgList(setOrgList, context.token)
+        if(context.token){
+            getUserOrg(setOrgInfo, context.token)
+        }
+        // getOrgList(setOrgList, context.token)
     }, [context.token])
+
+    if(!context.token){
+        return (<><h4>Loading...</h4></>)
+    }
 
     return(
         <>

@@ -33,8 +33,7 @@ function isInOrg(orgInfo){
     return dispOrg(orgInfo)
 }
 
-export default function MyOrg({userInfo, orgInfo, orgList}){
-    console.log("heheheh", {userInfo});
+export default function MyOrg({accountInfo, orgInfo, orgList}){
     return(
         <>
             {isInOrg(orgInfo)}

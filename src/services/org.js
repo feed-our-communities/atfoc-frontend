@@ -23,13 +23,11 @@ export async function getUserOrg(setOrgInfo, token) {
     let res
     try {
         res = await fetch(url, requestOptions)
-        console.log(res)
         orgInfo = await res.json();
     } catch (error) {
         console.log(error)
         return
     }
-    console.log(orgInfo)
     if(res.ok){
         setOrgInfo(orgInfo)
     }
@@ -37,18 +35,16 @@ export async function getUserOrg(setOrgInfo, token) {
 
 export async function getOrgList(setOrgList, token){
     let requestOptions = getStandardRequestOptions(token)
-    let url = SERVER + "/api/identity/org/"
+    let url = SERVER + "/api/identity/organization/"
     let orgList;
     let res;
     try {
         res = await fetch(url, requestOptions)
-        console.log(res);
         orgList = await res.json()
     } catch (error) {
         console.log(error)
         return
     }
-    console.log(orgList)
     if(res.ok){
         setOrgList(orgList)
     }

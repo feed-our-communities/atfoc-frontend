@@ -14,7 +14,7 @@ export default function RequestModal({org, show, setShow}) {
     const applicationText = useRef();
 
     function handleSubmit(){
-        joinRequest(org.id, applicationText, context.token)
+        joinRequest(org.id, applicationText.current.value, context.token)
         setShow(false)
     }
 
@@ -27,12 +27,11 @@ export default function RequestModal({org, show, setShow}) {
           keyboard={false}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Join Request</Modal.Title>
+            <Modal.Title>Join Request - {org.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="request">
-                <Form.Label>Join Request Form for {org.name}</Form.Label>
                 <Form.Control 
                     as="textarea"
                     placeholder="Write information related to your join request here"

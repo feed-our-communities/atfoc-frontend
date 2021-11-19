@@ -7,7 +7,10 @@ import Card from "react-bootstrap/Card";
 import { SERVER } from "../../constants"
 import { getStandardRequestOptions } from "../../services/org"
 import RequestModal from './RequestModal';
-import ContextGlobal from '../../contexts'
+import { ContextGlobal } from '../../contexts'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 
 class joinRequestModal extends React.PureComponent {
@@ -19,7 +22,7 @@ class joinRequestModal extends React.PureComponent {
         this.state = {
             orgs: [],
             filteredOrgs: [],
-            orgSelection: {name: "", id: ""},
+            orgSelection: {},
             show: false
         }
 
@@ -35,12 +38,12 @@ class joinRequestModal extends React.PureComponent {
     }
 
     async callOrgListAPI() {
-        var response = await fetch(SERVER + "/api/identity/organization", getStandardRequestOptions(this.context.token));
+        var response = await fetch(SERVER + "/api/identity/organization/", getStandardRequestOptions(this.context.token));
         var result = await response.json();
-
         if (response.ok) {
             this.setState({
-                orgs: result
+                orgs: result,
+                filteredOrgs: result
             });
         } else {
             console.log(result["message"]);
@@ -48,14 +51,14 @@ class joinRequestModal extends React.PureComponent {
     }
     
     filterOrgs(){
-        let search = this.search.current.toLowerCase()
+        let search = this.search.current.value.toLowerCase()
         let new_orgs = []
         if(!search){
-            return
+            this.setState({filteredOrgs: this.state.orgs})
         }
         let orgs = JSON.parse(JSON.stringify(this.state.orgs)) // deep copy
         for (const org of orgs){
-            if (org['Organization name'].toLowerCase().includes(search)){
+            if (org.name.toLowerCase().includes(search)){
                 new_orgs.push(org)
             }
         }
@@ -74,26 +77,31 @@ class joinRequestModal extends React.PureComponent {
     }
 
     getOrganizationCards() {
-        let orgList = this.state.orgs;
+        let orgList = this.state.filteredOrgs;
 
         var orgCards = [];
 
         for (var i = 0; i < orgList.length; i++) {
-            let orgName = orgList[i]["Organization name"]
-            let orgID = orgList[i]["Organization Id"]
+            let orgName = orgList[i].name
+            let orgID = orgList[i].id
             orgCards.push(
                 <Card>
                     <Card.Body>
-                        <span style={{display: "inline"}}>
-                            <p>{orgName}</p>
-                            <p> ({orgID}) </p>
-                            {/* TODO Does this acually pass the current org to each function? */}
-                            <Button onClick={() => this.handleOrgSelection(orgName, orgID)}>
-                                Join
-                            </Button>
-                        </span>
+                        <Container >
+                            <Row className="list-body">
+                                <Col><p>{orgName}</p></Col>
+                                <Col>
+                                    <Button 
+                                        onClick={() => this.handleOrgSelection(orgName, orgID)}
+                                        variant="customOrange">
+                                        Join
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Container>                            
                     </Card.Body>
-                </Card>);
+                </Card>
+            );
         }
         return orgCards;
     }
@@ -121,10 +129,10 @@ class joinRequestModal extends React.PureComponent {
                                 ref={this.search}
                             />
                         </Form.Group>
-                        <div className="org-list">
-                            {this.getOrganizationCards}
-                        </div>
                     </Form>
+                    <div className="org-list">
+                        {this.getOrganizationCards()}
+                    </div>
                 </Card.Body>
             </Card>
         </>);

@@ -1,5 +1,5 @@
 .card-style{
-  margin-right: 60% ;
+  margin-right: 65%;
   background-color: #EF8354;
   color: white;
 }
@@ -7,5 +7,11 @@
 .org-list{
   max-height: 20em;
   overflow-y: scroll;
+  color: black;
+}
+
+.list-body{
+  max-height: 2em;
+  text-align: left;
 }
 
