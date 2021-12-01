@@ -76,12 +76,12 @@ import { ContextGlobal } from '../../contexts';
     let adminButton = (<></>);
     if (isAdmin) {
         adminButton = (
-            <Button variant="customOrange" type="button" onClick={removeAdmin}>
+            <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false);}}>
                 Remove Admin
             </Button>);
     } else {
         adminButton = (
-            <Button variant="customOrange" type="button" onClick={makeAdmin}>
+            <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true);}}>
                 Make Admin
             </Button>);
     }
@@ -109,14 +109,29 @@ import { ContextGlobal } from '../../contexts';
 
  //TODO fill in these functions 
 
- function removeAdmin() {
-    //currently have no info on this call
- }
+ async function changeAdminStatus(newStatus, user_id) {
 
- function makeAdmin() {
-     //currently have no info on this call
+    //TODO get user_id
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token");
+
+    var formdata = new FormData();
+    formdata.append("is_admin", newStatus);
+
+    var requestOptions = {
+    method: 'PATCH',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
+    };
+
+    let response = await fetch("http://localhost:8000/api/identity/org/members/?id=" + user_id, requestOptions);
+    let result = await response.json();
 }
 
 function removeMember() {
      //currently have no info on this call
+
+     //DELETE /api/identity/org/members/id
 }
