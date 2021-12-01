@@ -111,10 +111,11 @@ import { ContextGlobal } from '../../contexts';
 
  async function changeAdminStatus(newStatus, user_id) {
 
-    //TODO get user_id
+    //TODO get user_id, token
+    let token = 0;
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Token");
+    myHeaders.append("Authorization", "Token " + token);
 
     var formdata = new FormData();
     formdata.append("is_admin", newStatus);
