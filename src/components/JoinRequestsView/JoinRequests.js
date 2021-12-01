@@ -7,7 +7,7 @@ import { ContextGlobal } from '../../contexts';
 /**
  * @returns join requests view
  */
- export default function JoinRequests(orgID) {
+ export default function JoinRequests({orgID}) {
     const context = useContext(ContextGlobal);
 
     const [pendingRequests, setPendingRequests] = useState([]);
