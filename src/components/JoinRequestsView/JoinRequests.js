@@ -7,12 +7,12 @@ import { ContextGlobal } from '../../contexts';
 /**
  * @returns join requests view
  */
- export default function JoinRequests() {
+ export default function JoinRequests({orgID}) {
     const context = useContext(ContextGlobal);
 
     const [pendingRequests, setPendingRequests] = useState([]);
 
-    getPendingJoinRequests(setPendingRequests, context.token);
+    getPendingJoinRequests(setPendingRequests, context.token, orgID);
 
     let requestCards = makeRequestCards(pendingRequests, context.token);
 
@@ -22,6 +22,8 @@ import { ContextGlobal } from '../../contexts';
  }
 
  function makeRequestCards(requests, token) {
+
+    console.log(requests);
 
     //TODO add notes  
     const approveNumber = 1;
@@ -40,17 +42,15 @@ import { ContextGlobal } from '../../contexts';
                     <div class="btn-group">
                         <p>{name}</p>
                         <div class="buttonPad">
-                            <Button variant="customOrange" type="button">
-                                Notes
-                            </Button>
+                            {requests[i].note}
                         </div>
                         <div class="buttonPad">
-                            <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(approveNumber, token);}}>
+                            <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(approveNumber, requests[i].id, token);}}>
                                 Approve
                             </Button>
                         </div>
                         <div class="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(rejectNumber, token);}}>
+                            <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(rejectNumber, requests[i].id, token);}}>
                                 Reject
                             </Button>
                         </div>
@@ -73,18 +73,16 @@ function updateJoinRequestStatus(status, token) {
     callUpdateJoinRequestAPI(status, token);
 }
 
- async function getPendingJoinRequests(setPendingRequests, token) {
+ async function getPendingJoinRequests(setPendingRequests, token, orgID) {
 
     const pendingStatusNum = 0;
 
-    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests, token);
+    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests, token, orgID);
 
     return result;
  }
 
- async function callJoinRequestsAPI(status, setPendingRequests, token) {
-
-    let orgID = 0; //TODO get actual ordID - localStorage? api call?
+ async function callJoinRequestsAPI(status, setPendingRequests, token, orgID) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token" + token);
@@ -105,12 +103,10 @@ function updateJoinRequestStatus(status, token) {
     }
  }
 
- async function callUpdateJoinRequestAPI(status, token) {
-
-    let requestId = 0; //TODO find actual request Id
+ async function callUpdateJoinRequestAPI(status, requestId, token) {
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Token");
+    myHeaders.append("Authorization", "Token" + token);
 
     var formdata = new FormData();
     formdata.append("request_id", requestId);
