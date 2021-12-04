@@ -30,6 +30,8 @@ export async function getUserInfo(setUserInfo, token) {
     }
     if(res.ok){
         setUserInfo(orgInfo)
+    } else if (res.status === 401) {
+        return -1
     }
 }
 
