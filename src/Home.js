@@ -40,10 +40,7 @@ export default function Home() {
     useEffect(() => {
         document.body.style.backgroundColor = COLORS.primary_white
         if(context.token){
-            if(getUserInfo(setUserInfo, context.token)){
-                // true (-1) if token is invalid
-                history.push('/login') 
-            }
+            getUserInfo(setUserInfo, context.token)
         }
         // getOrgList(setOrgList, context.token)
     }, [context.token])
