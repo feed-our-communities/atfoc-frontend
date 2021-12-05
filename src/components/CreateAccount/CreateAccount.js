@@ -5,7 +5,8 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from 'react-router-dom';
 import history from "../../history";
-import { SERVER } from "../../constants"
+import { SERVER } from "../../constants";
+import getErrCard from '../../utils/errCard';
 
 class CreateAccount extends React.PureComponent {
 
@@ -19,28 +20,11 @@ class CreateAccount extends React.PureComponent {
         this.lastName = React.createRef();
 
         this.callRegisterAPI = this.callRegisterAPI.bind(this);
-        this.validInput = this.validInput.bind(this);
-    }
 
-    validInput() {
-
-        // password and current password are same 
-        if (this.password.current.value !== this.confirmPassword.current.value) {
-            //TODO set state to show that username and password arent the same?
-            return false;
-        }
-
-        if (this.password.current.value.length < 8) {
-            return false;
-        }
-
-        // no all whitespace names
-        if (this.firstName.current.value.trim() === "" || this.lastName.current.value.trim() === "") {
-            return false;
-        }
-
-        return true;
-
+        this.state = {
+            errVisible: false, 
+            errMessage: "There was a problem completing your request, please try again",
+        };
     }
 
 
@@ -51,7 +35,7 @@ class CreateAccount extends React.PureComponent {
             this.password.current != null &&
             this.confirmPassword.current != null &&
             this.firstName.current != null &&
-            this.lastName.current != null && this.validInput()) {
+            this.lastName.current != null) {
 
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -71,24 +55,54 @@ class CreateAccount extends React.PureComponent {
             };
 
             var response = await fetch(SERVER + "/api/identity/register/", requestOptions);
-            console.log(response);
             var result = await response.json();
 
             if (response.status === 201) {
+                this.setState({
+                    errVisible: false, 
+                    errMessage: "There was a problem completing your request, please try again",
+                });
+
                 history.push("/login");
             } else {
                 console.log(result["message"]);
+
+                if (response.status === 400) {
+
+                    this.setState({
+                        errVisible: true, 
+                        errMessage: result["message"],
+                    });
+
+                } else if (response.status === 409) {
+
+                    this.setState({
+                        errVisible: true, 
+                        errMessage: "Account with this email already exists",
+                    });
+
+                } else {
+
+                    this.setState({
+                        errVisible: true, 
+                        errMessage: "There was a problem completing your request, please try again",
+                    });
+                }
             }
 
         }
     }
 
     render() {
+        let boldErr = "Account Creation Failed: ";
+        let errCard = getErrCard(this.state.errVisible, this.state.errMessage, boldErr);
+
         return (
             <>
                 <Card className="whiteCard">
                     <Card.Body>
                         <h1>Create An Account</h1>
+                        {errCard}
                         <Form>
                             <Form.Group
                                 controlId="formCreateAccountUsername"
