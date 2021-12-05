@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import history from "../../history";
 import { SERVER, COLORS } from "../../constants";
 import { ContextGlobal } from '../../contexts';
+import getErrCard from '../../utils/errCard';
 
 class Login extends React.Component {
     static contextType = ContextGlobal // makes context accessible through this.context
@@ -17,6 +18,11 @@ class Login extends React.Component {
         this.username = React.createRef();
         this.password = React.createRef();
         this.callLoginAPI = this.callLoginAPI.bind(this);
+
+        this.state = {
+            errVisible: false, 
+            errMessage: "There was a problem completing your request, please try again",
+        };
     }
 
     componentDidMount(){
@@ -49,22 +55,50 @@ class Login extends React.Component {
 
                 var token = result["token"];
                 localStorage.setItem("token", token);
-                this.context.setToken(token)
+                this.context.setToken(token);
+
+                this.setState({
+                    errVisible: false, 
+                    errMessage: "There was a problem completing your request, please try again",
+                });
 
                 history.push("/");
 
             } else {
                 console.log(result["message"]);
+
+                if (response.status === 400) {
+                    this.setState({
+                        errVisible: true,
+                        errMessage: "Missing Email or Password Field",
+                    });
+
+                } else if (response.status === 401) {
+                    this.setState({
+                        errVisible: true,
+                        errMessage: "Email or Password is invalid",
+                    });
+                } else {
+                    this.setState({
+                        errVisible: true, 
+                        errMessage: "There was a problem completing your request, please try again",
+                    });
+                }
             }
         }
     }
 
     render() {
+
+        let boldErr = "Login Failed: ";
+        let errCard = getErrCard(this.state.errVisible, this.state.errMessage, boldErr);
+
         return (
             <>
                 <Card className="whiteCard">
                     <Card.Body>
                         <h1>Login</h1>
+                        {errCard}
                         <Form>
                             <Form.Group
                                 controlId="formLoginUsername"
