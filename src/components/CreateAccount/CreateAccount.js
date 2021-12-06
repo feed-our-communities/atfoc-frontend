@@ -67,20 +67,20 @@ class CreateAccount extends React.PureComponent {
             } else {
                 console.log(result["message"]);
 
-                if (response.status === 400) {
+                if (response.status === 400 && !(this.password.current.value === this.confirmPassword.current.value)) {
 
                     this.setState({
                         errVisible: true, 
-                        errMessage: result["message"],
+                        errMessage: "Passwords do not match",
                     });
 
-                } else if (response.status === 409) {
+                } else if (response.status === 400 && this.password.current.value.length < 8) {
 
                     this.setState({
                         errVisible: true, 
-                        errMessage: "Account with this email already exists",
+                        errMessage: "Password must be at least 8 characters",
                     });
-
+                
                 } else {
 
                     this.setState({
