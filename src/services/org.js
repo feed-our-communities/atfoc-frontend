@@ -1,4 +1,5 @@
 import { SERVER } from "../constants"
+import history from "../history"
 
 export function getStandardRequestOptions(token){
     let myHeaders = new Headers()
@@ -30,6 +31,9 @@ export async function getUserInfo(setUserInfo, token) {
     }
     if(res.ok){
         setUserInfo(orgInfo)
+    } else if (res.status === 401) {
+        // invalid token
+        history.push('/login')
     }
 }
 
