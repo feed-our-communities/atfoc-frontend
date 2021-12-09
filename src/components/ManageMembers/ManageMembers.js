@@ -6,7 +6,7 @@ import { ContextGlobal } from '../../contexts';
 /**
  * @returns manage members  view
  */
- export default function ManageMembers() {
+export default function ManageMembers() {
     const context = useContext(ContextGlobal);
 
     const [regMembers, setRegMembers] = useState([]);
@@ -28,9 +28,9 @@ import { ContextGlobal } from '../../contexts';
                     </Tab>
                 </Tabs>
             </>);
- }
+}
 
- async function getUsers(regMembers, admins, setUsers, getAdmin, token) {
+async function getUsers(regMembers, admins, setUsers, getAdmin, token) {
 
     //TODO get orgID
     let orgID = 0;
@@ -64,10 +64,9 @@ import { ContextGlobal } from '../../contexts';
     } else {
         console.log(result);
     }
+}
 
- }
-
- function makeUserCards(users, isAdmin, token) {
+function makeUserCards(users, isAdmin, token) {
 
     console.log(users);
 
@@ -105,9 +104,9 @@ import { ContextGlobal } from '../../contexts';
     }
 
     return cards; 
- } 
+} 
 
- async function changeAdminStatus(newStatus, token) {
+async function changeAdminStatus(newStatus, token) {
 
     //TODO get user_id
     let user_id = 0;
@@ -129,7 +128,7 @@ import { ContextGlobal } from '../../contexts';
     let result = await response.json();
 }
 
-function removeMember(token) {
+async function removeMember(token) {
 
     //TODO get user id
     //TODO check that parameter is right with api call
