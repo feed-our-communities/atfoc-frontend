@@ -9,6 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 import Button from "react-bootstrap/Button";
 import MyOrg from './components/MyOrg/MyOrg';
 import OrgApplications from './components/OrgApplications/OrgApplications';
+import ExistingOrgs from './components/ExistingOrgs/ExistingOrgs';
 import history from "./history";
 import { COLORS } from "./constants";
 import { ContextGlobal } from './contexts';
@@ -52,7 +53,7 @@ export default function Home() {
 
     // render site admin view 
     // TODO get info about this api call
-    let siteAdmin = false;
+    let siteAdmin = true;
     if (siteAdmin) {
         return (
             <>
@@ -80,7 +81,7 @@ export default function Home() {
                         <Col sm={9} className = "content">
                             <Tab.Content>
                                 <Tab.Pane eventKey="ExistingOrgs">
-                                <h1>Existing Orgs Here</h1>
+                                    <ExistingOrgs/>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="OrgApps">
                                     <OrgApplications/>

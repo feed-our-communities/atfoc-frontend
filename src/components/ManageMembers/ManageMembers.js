@@ -88,12 +88,12 @@ function makeUserCards(users, isAdmin, token) {
     for (let i = 0; i < users.length; i++) {
         cards.push(<Card>
                 <Card.Body>
-                    <div class="btn-group">
+                    <div className="btn-group">
                         <p>Name</p>
-                        <div class="buttonPad">
+                        <div className="buttonPad">
                             {adminButton}
                         </div>
-                        <div class="buttonPad">
+                        <div className="buttonPad">
                             <Button variant="customBlue" type="button" onClick={function() {removeMember(token)}}>
                                 Remove
                             </Button>

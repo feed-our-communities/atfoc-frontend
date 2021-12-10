@@ -9,7 +9,8 @@ export default function OrgApplications() {
 
     const [orgApps, setOrgApps] = useState([]);
 
-    getOrgApplications(setOrgApps, context.token);
+    // TODO uncomment when done testing
+    // getOrgApplications(setOrgApps, context.token);
 
     let orgCards = makeOrgCards(orgApps, context.token);
 
@@ -62,9 +63,9 @@ function makeOrgCards(orgApps, token) {
         orgCards.push(
             <Card>
                 <Card.Body>
-                    <div class="btn-group">
+                    <div className="btn-group">
                         <p>Note</p>
-                        <div class="buttonPad">
+                        <div className="buttonPad">
                             <Button variant="customBlue" type="button" onClick={function() {approveOrgApp()}}>
                                 Approve
                             </Button>
