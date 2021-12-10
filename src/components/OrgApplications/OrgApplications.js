@@ -9,8 +9,7 @@ export default function OrgApplications() {
 
     const [orgApps, setOrgApps] = useState([]);
 
-    // TODO uncomment when done testing
-    // getOrgApplications(setOrgApps, context.token);
+    getOrgApplications(setOrgApps, context.token);
 
     let orgCards = makeOrgCards(orgApps, context.token);
 
