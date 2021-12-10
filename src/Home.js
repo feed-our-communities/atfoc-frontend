@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav';
 import Button from "react-bootstrap/Button";
 import MyOrg from './components/MyOrg/MyOrg';
+import OrgApplications from './components/OrgApplications/OrgApplications';
 import history from "./history";
 import { COLORS } from "./constants";
 import { ContextGlobal } from './contexts';
@@ -50,9 +51,9 @@ export default function Home() {
     }
 
     // render site admin view 
-    let siteAdmin = true;
+    // TODO get info about this api call
+    let siteAdmin = false;
     if (siteAdmin) {
-
         return (
             <>
                 <Tab.Container id="left-tabs-siteAdmin" defaultActiveKey="ExistingOrgs">
@@ -82,7 +83,7 @@ export default function Home() {
                                 <h1>Existing Orgs Here</h1>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="OrgApps">
-                                <h1>Org Applications Here</h1>
+                                    <OrgApplications/>
                                 </Tab.Pane>
                             </Tab.Content>
                         </Col>
