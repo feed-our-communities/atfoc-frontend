@@ -4,7 +4,7 @@ import {Card, Button, Tabs, Tab} from "react-bootstrap";
 import { ContextGlobal } from '../../contexts';
 
 /**
- * @returns manage members  view
+ * @returns manage members view
  */
 export default function ManageMembers() {
     const context = useContext(ContextGlobal);

@@ -49,6 +49,50 @@ export default function Home() {
         return (<><h4>Loading...</h4></>)
     }
 
+    // render site admin view 
+    let siteAdmin = true;
+    if (siteAdmin) {
+
+        return (
+            <>
+                <Tab.Container id="left-tabs-siteAdmin" defaultActiveKey="ExistingOrgs">
+                    <Row>
+                        <Col sm={3} className="primaryOrangeBG" style={{textAlign: "center"}}>
+                            <p style={{fontSize:"1.2em"}}>Welcome, {accountInfo.first} {accountInfo.last}</p>
+                            <Nav variant="pills" className="flex-column">
+                                <Nav.Item >
+                                    <Nav.Link eventKey="ExistingOrgs">Existing Orgs</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="OrgApps">Org Applications</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                            <Button id="logoutButton" variant="customBottomBlue" type="button" onClick={function() {
+                                context.setToken(undefined);
+                                localStorage.removeItem('token');
+                                history.push("/login");
+                            }}> 
+                                Logout
+                            </Button>
+                        </Col>
+
+                        <Col sm={9} className = "content">
+                            <Tab.Content>
+                                <Tab.Pane eventKey="ExistingOrgs">
+                                <h1>Existing Orgs Here</h1>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="OrgApps">
+                                <h1>Org Applications Here</h1>
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Col>
+                    </Row>
+                </Tab.Container>
+            </>
+        );
+
+    }
+
     // render view with no org
     if(!accountInfo.organization){
         return(
