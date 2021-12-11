@@ -9,7 +9,7 @@ export default function OrgApplications() {
 
     const [orgApps, setOrgApps] = useState([]);
 
-    getOrgApplications(setOrgApps, context.token);
+    getOrgApplications(setOrgApps, orgApps, context.token);
 
     let orgCards = makeOrgCards(orgApps, context.token);
 
@@ -25,7 +25,7 @@ export default function OrgApplications() {
 
 }
 
-async function getOrgApplications(setOrgApps, token) {
+async function getOrgApplications(setOrgApps, orgApps, token) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
@@ -38,13 +38,27 @@ async function getOrgApplications(setOrgApps, token) {
 
     let pendingStatusID = 0;
 
-    let response = await fetch("http://localhost:8000/api/identity/application/?status=" + pendingStatusID, requestOptions);
-    let result = await response.json();
+    let response;
+    let result;
+
+    try {
+        response = await fetch("http://localhost:8000/api/identity/application/?status=" + pendingStatusID, requestOptions);
+        result = await response.json();
+    } catch (error) {
+        console.log(error)
+        return;
+    }
+
+    console.log(result);
 
     if (response.status === 200) {
-        setOrgApps(result);
+        if (JSON.stringify(orgApps) !== JSON.stringify(result)) {
+            setOrgApps(result);
+        } 
     } else if (response.status === 204) {
-        setOrgApps([]);
+        if (JSON.stringify(orgApps) !== JSON.stringify(result)) {
+            setOrgApps([]);
+        } 
     } else {
         alert("An Error Occured Retrieving Organization Applications.");
         console.log(response.status);
@@ -54,19 +68,22 @@ async function getOrgApplications(setOrgApps, token) {
 
 function makeOrgCards(orgApps, token) {
 
-    //TODO add note
-
     let orgCards = [];
 
     for (let i = 0; i < orgApps.length; i++) {
         orgCards.push(
-            <Card>
+            <Card key={i}>
                 <Card.Body>
                     <div className="btn-group">
-                        <p>Note</p>
+                        <p>{orgApps[i]["name"]}</p>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {approveOrgApp()}}>
+                            <Button variant="customOrange" type="button" onClick={function() {changeOrgAppStatus(1)}}>
                                 Approve
+                            </Button>
+                        </div>
+                        <div className="buttonPad">
+                            <Button variant="customBlue" type="button" onClick={function() {changeOrgAppStatus(2)}}>
+                                Deny
                             </Button>
                         </div>
                     </div>
@@ -75,9 +92,9 @@ function makeOrgCards(orgApps, token) {
         );
     }
 
-    return ([]);
+    return orgCards;
 }
 
-async function approveOrgApp() {
-
+async function changeOrgAppStatus(status) {
+    //TODO nothing was in jira or contract
 }

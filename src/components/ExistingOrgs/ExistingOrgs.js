@@ -9,7 +9,7 @@ export default function ExistingOrgs() {
 
     const [orgs, setOrgs] = useState([]);
 
-    getOrgs(setOrgs, context.token);
+    getOrgs(setOrgs, orgs, context.token);
 
     let orgCards = makeOrgCards(orgs, context.token);
 
@@ -24,7 +24,7 @@ export default function ExistingOrgs() {
     );
 }
 
-async function getOrgs(setOrgs, token) {
+async function getOrgs(setOrgs, orgs, token) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
@@ -35,11 +35,21 @@ async function getOrgs(setOrgs, token) {
     redirect: 'follow'
     };
 
-    let response = await fetch("http://localhost:8000/api/identity/org", requestOptions);
-    let result = await response.json();
+    let response;
+    let result;
+
+    try {
+        response = await fetch("http://localhost:8000/api/identity/organization", requestOptions);
+        result = await response.json();
+    } catch (error) {
+        console.log(error)
+        return;
+    }
 
     if (response.status === 200) {
-        setOrgs(result);
+        if (JSON.stringify(orgs) !== JSON.stringify(result)) {
+            setOrgs(result);
+        }
     } else {
         alert("There was a problem retrieving active organizations.");
     }
@@ -50,13 +60,6 @@ function makeOrgCards(orgs, token) {
 
     let orgCards = [];
 
-    // orgs.push(
-    //     {
-    //         "Organization Id": 0,
-    //         "Organization name": "test",
-    //     }
-    // );
-
     console.log(orgs);
 
     for (let i = 0; i < orgs.length; i++) {
@@ -64,10 +67,10 @@ function makeOrgCards(orgs, token) {
             <Card key={i}>
                 <Card.Body>
                     <div className="btn-group">
-                        <p>{orgs[i]["Organization Id"]} </p>
-                        <p>{orgs[i]["Organization name"]}</p>
+                        <p>{orgs[i]["id"]} </p>
+                        <p>{orgs[i]["name"]}</p>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {removeOrg()}}>
+                            <Button variant="customBlue" type="button" onClick={function() {removeOrg(token)}}>
                                 Remove
                             </Button>
                         </div>
@@ -81,7 +84,7 @@ function makeOrgCards(orgs, token) {
 
 }
 
-async function removeOrg() {
+async function removeOrg(token) {
     //TODO (i dont think we planned for this)
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {Card, Button, Form} from "react-bootstrap";
+import {Card, Button} from "react-bootstrap";
 import './JoinRequests.css'
 
 import { ContextGlobal } from '../../contexts';
