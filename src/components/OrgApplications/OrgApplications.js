@@ -11,7 +11,7 @@ export default function OrgApplications() {
 
     getOrgApplications(setOrgApps, orgApps, context.token);
 
-    let orgCards = makeOrgCards(orgApps, context.token);
+    let orgCards = makeOrgCards(orgApps, setOrgApps, context.token);
 
     return (
         <>
@@ -66,7 +66,10 @@ async function getOrgApplications(setOrgApps, orgApps, token) {
     }
 }
 
-function makeOrgCards(orgApps, token) {
+function makeOrgCards(orgApps, setOrgApps, token) {
+
+    let approveNum = 1;
+    let denyNum = 2;
 
     let orgCards = [];
 
@@ -77,12 +80,12 @@ function makeOrgCards(orgApps, token) {
                     <div className="btn-group">
                         <p>{orgApps[i]["name"]}</p>
                         <div className="buttonPad">
-                            <Button variant="customOrange" type="button" onClick={function() {changeOrgAppStatus(1)}}>
+                            <Button variant="customOrange" type="button" onClick={function() {changeOrgAppStatus(approveNum, orgApps, setOrgApps, orgApps[i]["id"])}}>
                                 Approve
                             </Button>
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {changeOrgAppStatus(2)}}>
+                            <Button variant="customBlue" type="button" onClick={function() {changeOrgAppStatus(denyNum, orgApps, setOrgApps, orgApps[i]["id"])}}>
                                 Deny
                             </Button>
                         </div>
@@ -95,6 +98,40 @@ function makeOrgCards(orgApps, token) {
     return orgCards;
 }
 
-async function changeOrgAppStatus(status) {
-    //TODO nothing was in jira or contract
+async function changeOrgAppStatus(status, orgApps, setOrgApps, appId) {
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+        "id": appId,
+        "status": status
+    });
+
+    var requestOptions = {
+        method: 'PATCH',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    let response;
+    let result;
+
+    try {
+        response = await fetch("http://localhost:8000/api/identity/application/", requestOptions);
+        result = await response.json();
+    } catch (error) {
+        console.log(error);
+    }
+
+    if (response.status === 200) {
+
+        //TODO set state with org app? 
+
+    } else {
+        alert("There has been a problem updating the status of this application.");
+    }
+
 }
