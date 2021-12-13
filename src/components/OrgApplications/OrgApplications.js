@@ -80,12 +80,12 @@ function makeOrgCards(orgApps, setOrgApps, token) {
                     <div className="btn-group">
                         <p>{orgApps[i]["name"]}</p>
                         <div className="buttonPad">
-                            <Button variant="customOrange" type="button" onClick={function() {changeOrgAppStatus(approveNum, orgApps, setOrgApps, orgApps[i]["id"])}}>
+                            <Button variant="customOrange" type="button" onClick={function() {changeOrgAppStatus(approveNum, orgApps, setOrgApps, orgApps[i]["id"], token)}}>
                                 Approve
                             </Button>
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {changeOrgAppStatus(denyNum, orgApps, setOrgApps, orgApps[i]["id"])}}>
+                            <Button variant="customBlue" type="button" onClick={function() {changeOrgAppStatus(denyNum, orgApps, setOrgApps, orgApps[i]["id"], token)}}>
                                 Deny
                             </Button>
                         </div>
@@ -98,7 +98,7 @@ function makeOrgCards(orgApps, setOrgApps, token) {
     return orgCards;
 }
 
-async function changeOrgAppStatus(status, orgApps, setOrgApps, appId) {
+async function changeOrgAppStatus(status, orgApps, setOrgApps, appId, token) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
@@ -128,8 +128,23 @@ async function changeOrgAppStatus(status, orgApps, setOrgApps, appId) {
 
     if (response.status === 200) {
 
-        //TODO set state with org app? 
+        let newApps = JSON.parse(JSON.stringify(orgApps));
 
+        let index = -1;
+        
+        for (let i = 0; i < newApps.length; i++) {
+            if (newApps[i]["id"] === appId) {
+                index = i;
+            }
+        }
+
+        if (index === -1) {
+            alert("There has been a problem updating the status of this application.");
+        } else {
+            newApps.splice(index, 1);
+            setOrgApps(newApps);
+        }
+        
     } else {
         alert("There has been a problem updating the status of this application.");
     }
