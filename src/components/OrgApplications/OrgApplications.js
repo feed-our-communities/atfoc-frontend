@@ -141,7 +141,10 @@ async function changeOrgAppStatus(status, orgApps, setOrgApps, appId, token) {
         if (index === -1) {
             alert("There has been a problem updating the status of this application.");
         } else {
-            newApps.splice(index, 1);
+            let removedElem = newApps.splice(index, 1)[0];
+            if (status === 1) {
+                createNewOrganization(removedElem)
+            }
             setOrgApps(newApps);
         }
         
@@ -149,4 +152,8 @@ async function changeOrgAppStatus(status, orgApps, setOrgApps, appId, token) {
         alert("There has been a problem updating the status of this application.");
     }
 
+}
+
+async function createNewOrganization(newOrg) {
+    //TODO couldnt find info on this api call
 }
