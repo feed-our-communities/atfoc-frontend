@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {Card, Button, Form} from "react-bootstrap";
+import {Card, Button} from "react-bootstrap";
 import './JoinRequests.css'
 
 import { ContextGlobal } from '../../contexts';
@@ -39,17 +39,17 @@ import { ContextGlobal } from '../../contexts';
         requestCardList.push(
             <Card>
                 <Card.Body>
-                    <div class="btn-group">
+                    <div className="btn-group">
                         <p>{name}</p>
-                        <div class="buttonPad">
+                        <div className="buttonPad">
                             {requests[i].note}
                         </div>
-                        <div class="buttonPad">
+                        <div className="buttonPad">
                             <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(approveNumber, requests[i].id, token);}}>
                                 Approve
                             </Button>
                         </div>
-                        <div class="buttonPad">
+                        <div className="buttonPad">
                             <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(rejectNumber, requests[i].id, token);}}>
                                 Reject
                             </Button>
