@@ -12,6 +12,7 @@ import { ContextGlobal } from '../../contexts'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Image from 'react-bootstrap/Image'
 
 class Donations extends React.PureComponent {
     static contextType = ContextGlobal
@@ -26,28 +27,24 @@ class Donations extends React.PureComponent {
             showOrg: false,
             showMakeDon: false,
             selectedDonID: null,
-            SelectedOrgID: null,
+            selectedOrgID: null,
             showDelDon: false,
             loadingDons: false
         }
 
         this.search = React.createRef();
-        this.applicationText = React.createRef();
-        this.callOrgListAPI = this.callOrgListAPI.bind(this);
-        this.getOrganizationCards = this.getDonationCards.bind(this);
-        this.setShow = this.setShowMakeDon.bind(this);
+        this.getAllDonations = this.getAllDonations.bind(this)
+        this.filterDons = this.filterDons.bind(this)
+        this.setShowDelDon = this.setShowDelDon.bind(this)
+        this.setShowMakeDon = this.setShowMakeDon.bind(this)
+        this.setShowOrg = this.setShowOrg.bind(this)
+        this.setShowUserOrg = this.setShowUserOrg.bind(this)
+        this.handleOrgSelection = this.handleOrgSelection.bind(this)
     }
 
     componentDidMount(){
         this.getAllDonations()
     }
-
-    componentDidUpdate(){
-
-    }
-
-    // radio button for viewing your donations
-    // if active only show org, otherwise dont show
 
     async getAllDonations() {
         var response = await fetch(SERVER + "/api/listing/donations/", getStandardRequestOptions(this.context.token));
@@ -61,36 +58,26 @@ class Donations extends React.PureComponent {
             console.log(result["message"]);
         }
     }
-
-
-
-
-    // async getOrgDonations() {
-    //     var response = await fetch(SERVER + "/api/listing/donations/?org_id=" + this.props.orgID, getStandardRequestOptions(this.context.token));
-    //     var result = await response.json();
-    //     if (response.ok) {
-    //         this.setState({
-    //             donations: result.donations,
-    //             filteredDonations: result.donations
-    //         });
-    //     } else {
-    //         console.log(result["message"]);
-    //     }
-    // }
     
-    filterOrgs(){
+    filterDons(){
         let search = this.search.current.value.toLowerCase()
-        let new_orgs = []
+        let filtered_dons = []
+        let dons = JSON.parse(JSON.stringify(this.state.allDonations)) // deep copy
         if(!search){
-            this.setState({filteredOrgs: this.state.orgs})
+            this.setState({filteredDonations: dons})
         }
-        let orgs = JSON.parse(JSON.stringify(this.state.orgs)) // deep copy
-        for (const org of orgs){
-            if (org.name.toLowerCase().includes(search)){
-                new_orgs.push(org)
+        for (const don of dons){
+            if (don.description.toLowerCase().includes(search)){
+                filtered_dons.push(don)
+            }else{
+                for(const trait of don.traits){
+                    if (trait.toLowerCase().includes(search)) {
+                        filtered_dons.push(don)
+                    }
+                }
             }
         }
-        this.setState({filteredOrgs: new_orgs})
+        this.setState({filteredDonations: filtered_dons})
     }
 
     setShowMakeDon(val){
@@ -115,40 +102,89 @@ class Donations extends React.PureComponent {
         this.setState({SelectedOrgID: orgID})
     }
 
+    handleDelDonBtn(donID){
+        this.setShowDelDon(true)
+        this.setState({selectedDonID: donID})
+    }
+
     // shows the users donations with option to close them
-    getUserDonations(){
+    getUserDonationCards(){
         let donList = this.state.filteredDonations;
         var donCards = [];
 
-        return donList
+        for (var i = 0; i < donList.length; i++) {
+            if (donList[i].organization_id !== this.props.orgID){
+                continue //only add user's org
+            }
+            let donID = donList[i].donation_id
+            let desc = donList[i].description
+            let exp = new Date(donList[i].expiration_date).toLocaleString().split(',')[0]
+            let picture_url = donList[i].picture
+            let traits = donList[i].traits
+            donCards.push(
+                <Card key={i}>
+                    <Card.Body>
+                        <Container>
+                            <Row className="list-body">
+                                <Col>
+                                    <Image src={picture_url} fluid/>
+                                </Col>
+                                <Col>
+                                    <p>{desc}</p>
+                                    <br></br>
+                                    <p>Expiration Date: {exp}</p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <p>Tags: {traits.join(", ")}</p>
+                                <Button 
+                                    onClick={() => this.handleDelDonBtn(donID)}
+                                    variant="customOrange">
+                                    Close Listing
+                                </Button>
+                            </Row>
+                        </Container>                            
+                    </Card.Body>
+                </Card>
+            );
+        }
+        return donCards;
     }
 
     getDonationCards() {
         if(this.state.showUserOrg){
-            return this.getUserDonations()
+            return this.getUserDonationCards()
         }
 
         let donList = this.state.filteredDonations;
         var donCards = [];
 
         for (var i = 0; i < donList.length; i++) {
-            let orgName = donList[i].name
-            let orgID = donList[i].id
+            let orgID = donList[i].organization_id
+            let desc = donList[i].description
+            let exp = new Date(donList[i].expiration_date).toLocaleString().split(',')[0]
+            let picture_url = donList[i].picture
+            let traits = donList[i].traits
             donCards.push(
                 <Card key={i}>
                     <Card.Body>
-                        <Container >
+                        <Container>
                             <Row className="list-body">
-                            <Col>
-                                <Button 
-                                    onClick={() => this.handleOrgSelection(orgID)}
-                                    variant="customOrange">
-                                    Show Org Contact Info
-                                </Button>
+                                <Col>
+                                    <Image src={picture_url} fluid/>
+                                </Col>
+                                <Col>
+                                    <Button 
+                                        onClick={() => this.handleOrgSelection(orgID)}
+                                        variant="customOrange">
+                                        Show Org Contact Info
+                                    </Button>
+                                    <p>{desc}</p>
+                                    <p>Expiration Date: {exp}</p>
                                 </Col>
                             </Row>
-                            <Row className="list-body">
-                                <Col><p>{orgName}</p></Col>
+                            <Row>
+                                <p>traits: {traits.join(", ")}</p>
                             </Row>
                         </Container>                            
                     </Card.Body>
@@ -161,8 +197,8 @@ class Donations extends React.PureComponent {
     render() {
         return (
         <>
-            <MakeDonationModal 
-                org= {this.props.org}
+            <MakeDonationModal
+                orgID= {this.props.orgID}
                 show = {this.state.showMakeDon}
                 setShow = {this.setShowMakeDon}
                 updateDonations = {this.getAllDonations}
@@ -174,10 +210,16 @@ class Donations extends React.PureComponent {
                 updateDonations = {this.getAllDonations}
             />
             <OrgInfoModal
-                org = {this.state.selectedDonID}
+                orgID = {this.state.selectedOrgID}
                 show = {this.state.showOrg}
                 setShow = {this.state.setShowOrg}
             />
+            <Button 
+                variant="customOrange"
+                type="button"
+                onClick={() => this.setShowMakeDon(true)}>
+                Make a Donation
+            </Button>
             <Card className="card-style">
                 <Card.Body>
                     <h3>Search Donations</h3>
@@ -185,7 +227,7 @@ class Donations extends React.PureComponent {
                         <Form.Group
                             controlId="formSearchOrgList"
                             className="mb-3"
-                            onChange={() => this.filterOrgs()}
+                            onChange={() => this.filterDons()}
                         >
                             <Form.Control
                                 type="text"
@@ -197,7 +239,7 @@ class Donations extends React.PureComponent {
                             <Form.Check type="checkbox" label="Show my Donations" />
                             <Form.Control
                                 value = {this.state.showUserOrg}
-                                onChange={(val) => {this.setShowUserOrg()}}
+                                onChange={(checked) => this.setShowUserOrg(checked)}
                             />
                         </Form.Group>
                     </Form>

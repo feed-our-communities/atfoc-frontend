@@ -11,6 +11,7 @@ import MyOrg from './components/MyOrg/MyOrg';
 import history from "./history";
 import { COLORS } from "./constants";
 import { ContextGlobal } from './contexts';
+import Donations from './components/Donations/Donations';
 
 /**
  * Parent for the index/home page. 
@@ -34,7 +35,6 @@ export default function Home() {
                 context.setToken(stored_token)
             }
         }
-        // TODO consider validating token
     }, [context])
 
     useEffect(() => {
@@ -45,9 +45,9 @@ export default function Home() {
         // getOrgList(setOrgList, context.token)
     }, [context.token])
 
-    if(!accountInfo){
-        return (<><h4>Loading...</h4></>)
-    }
+    // if(!accountInfo){
+    //     return (<><h4>Loading...</h4></>)
+    // }
 
     // render view with no org
     if(!accountInfo.organization){
@@ -120,7 +120,9 @@ export default function Home() {
                             />
                             </Tab.Pane>
                             <Tab.Pane eventKey="Donations">
-                            <h1>Donations component here</h1>
+                                <Donations
+                                    orgID = {accountInfo.organization.id}
+                                />
                             </Tab.Pane>
                             <Tab.Pane eventKey="Requests">
                             <h1>Requests component here</h1>

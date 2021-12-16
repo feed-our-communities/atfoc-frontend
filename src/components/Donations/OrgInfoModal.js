@@ -12,15 +12,15 @@ export default function OrgInfoModal({orgID, show, setShow}) {
     const handleClose = () => setShow(false);
 
     useEffect(() => {
-      getOrg(setOrgInfo, context.token)
+      if (orgID !== null) {
+        getOrg(orgID, setOrgInfo, context.token)
+      }
     }, [orgID, context.token])
 
     return(
         <Modal
           show={show}
           onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
         >
           <Modal.Header closeButton>
             <Modal.Title>Org contact Info</Modal.Title>

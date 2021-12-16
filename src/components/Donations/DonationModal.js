@@ -8,7 +8,7 @@ import { deleteDonation, makeDonation } from "../../services/org";
 import { ContextGlobal } from '../../contexts';
 import DatePicker from 'react-datepicker';
 
-export function MakeDonationModal({org, show, setShow, updateDonations}) {
+export function MakeDonationModal({orgID, show, setShow, updateDonations}) {
     const context = useContext(ContextGlobal)
     const [expirationDate, setStartDate] = useState(new Date());
     const [selectedImage, setSelectedImage] = useState(null);
@@ -19,7 +19,7 @@ export function MakeDonationModal({org, show, setShow, updateDonations}) {
 
     async function handleSubmit(){
       var body = {
-        "org_id": org.id, // TODO double check props  
+        "org_id": orgID,
         "description": description.current.value,
         "picture": selectedImage,
         "expiration_date": expirationDate,
@@ -50,6 +50,13 @@ export function MakeDonationModal({org, show, setShow, updateDonations}) {
                   placeholder="Donation Description"
                   ref={description}
                   rows={3} />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="Traits">
+                <Form.Control 
+                  as="textarea"
+                  placeholder="Tags. Comma separated"
+                  ref={traits}
+                  rows={2} />
               </Form.Group>
               <Form.Group controlId="formFile" className="mb-3">
                 <Form.Label>Donation Image</Form.Label>
