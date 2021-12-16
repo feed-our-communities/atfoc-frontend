@@ -9,6 +9,7 @@ import JoinRequests from '../JoinRequestsView/JoinRequests';
 import ManageMembers from '../ManageMembers/ManageMembers';
 
 function dispOrg(orgInfo){
+  // TODO display better
   return(
     <>
       <h4>{orgInfo.name}</h4>

@@ -13,7 +13,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 
-class joinRequestModal extends React.PureComponent {
+class JoinRequestModal extends React.PureComponent {
     static contextType = ContextGlobal
 
     constructor(props) {
@@ -139,4 +139,4 @@ class joinRequestModal extends React.PureComponent {
     }
 }
 
-export default joinRequestModal;
+export default JoinRequestModal;
