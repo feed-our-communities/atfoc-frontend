@@ -43,7 +43,7 @@ import { ContextGlobal } from '../../contexts';
         let name = requests[i].user.first + " " + requests[i].user.last;
 
         requestCardList.push(
-            <Card>
+            <Card key={i}>
                 <Card.Body>
                     <div className="btn-group">
                         <p>{name}</p>
@@ -75,8 +75,8 @@ import { ContextGlobal } from '../../contexts';
     return requestCardList;
  }
 
-function updateJoinRequestStatus(status, token) {
-    callUpdateJoinRequestAPI(status, token);
+function updateJoinRequestStatus(status, id, token) {
+    callUpdateJoinRequestAPI(status, id, token);
 }
 
  async function getPendingJoinRequests(setPendingRequests, token, orgID, joinRequests) {
@@ -127,7 +127,7 @@ function updateJoinRequestStatus(status, token) {
     redirect: 'follow'
     };
 
-    let response = await fetch("http://localhost:8000/api/identity/joinrequests", requestOptions);
+    let response = await fetch("http://localhost:8000/api/identity/joinrequests/", requestOptions);
     let result = await response.json();
 
     //TODO error handling
