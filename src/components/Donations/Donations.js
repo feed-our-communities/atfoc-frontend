@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { SERVER } from "../../constants"
 import { getStandardRequestOptions } from "../../services/org"
-import MakeDonationModal, { DeleteDonationModal } from './DonationModal';
+import {MakeDonationModal, DeleteDonationModal } from './DonationModal';
 import OrgInfoModal from './OrgInfoModal'
 import { ContextGlobal } from '../../contexts'
 import Container from 'react-bootstrap/Container'
@@ -69,12 +69,6 @@ class Donations extends React.PureComponent {
         for (const don of dons){
             if (don.description.toLowerCase().includes(search)){
                 filtered_dons.push(don)
-            }else{
-                for(const trait of don.traits){
-                    if (trait.toLowerCase().includes(search)) {
-                        filtered_dons.push(don)
-                    }
-                }
             }
         }
         this.setState({filteredDonations: filtered_dons})
@@ -89,7 +83,6 @@ class Donations extends React.PureComponent {
     }
 
     setShowUserOrg(val){
-        console.log(val)
         this.setState({showUserOrg: val})
     }
 
@@ -99,7 +92,7 @@ class Donations extends React.PureComponent {
 
     handleOrgSelection(orgID){
         this.setShowOrg(true) // show the org info modal
-        this.setState({SelectedOrgID: orgID})
+        this.setState({selectedOrgID: orgID})
     }
 
     handleDelDonBtn(donID){
@@ -120,28 +113,24 @@ class Donations extends React.PureComponent {
             let desc = donList[i].description
             let exp = new Date(donList[i].expiration_date).toLocaleString().split(',')[0]
             let picture_url = donList[i].picture
-            let traits = donList[i].traits
+            // let traits = donList[i].traits
             donCards.push(
                 <Card key={i}>
                     <Card.Body>
                         <Container>
-                            <Row className="list-body">
+                            <Row className="list-body-don">
                                 <Col>
                                     <Image src={picture_url} fluid/>
                                 </Col>
                                 <Col>
                                     <p>{desc}</p>
-                                    <br></br>
                                     <p>Expiration Date: {exp}</p>
+                                    <Button 
+                                        onClick={() => this.handleDelDonBtn(donID)}
+                                        variant="customOrange">
+                                        Close Listing
+                                    </Button>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <p>Tags: {traits.join(", ")}</p>
-                                <Button 
-                                    onClick={() => this.handleDelDonBtn(donID)}
-                                    variant="customOrange">
-                                    Close Listing
-                                </Button>
                             </Row>
                         </Container>                            
                     </Card.Body>
@@ -160,31 +149,31 @@ class Donations extends React.PureComponent {
         var donCards = [];
 
         for (var i = 0; i < donList.length; i++) {
+            if (donList[i].organization_id === this.props.orgID){
+                continue //only add user's org
+            }
             let orgID = donList[i].organization_id
             let desc = donList[i].description
             let exp = new Date(donList[i].expiration_date).toLocaleString().split(',')[0]
             let picture_url = donList[i].picture
-            let traits = donList[i].traits
+            // let traits = donList[i].traits
             donCards.push(
                 <Card key={i}>
                     <Card.Body>
                         <Container>
-                            <Row className="list-body">
+                            <Row className="list-body-don">
                                 <Col>
                                     <Image src={picture_url} fluid/>
                                 </Col>
                                 <Col>
+                                    <p>{desc}</p>
+                                    <p>Expiration Date: {exp}</p>
                                     <Button 
                                         onClick={() => this.handleOrgSelection(orgID)}
                                         variant="customOrange">
                                         Show Org Contact Info
                                     </Button>
-                                    <p>{desc}</p>
-                                    <p>Expiration Date: {exp}</p>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <p>traits: {traits.join(", ")}</p>
                             </Row>
                         </Container>                            
                     </Card.Body>
@@ -206,13 +195,13 @@ class Donations extends React.PureComponent {
             <DeleteDonationModal
                 donationID = {this.state.selectedDonID}
                 show = {this.state.showDelDon}
-                setShow = {this.state.setShowDelDon}
+                setShow = {this.setShowDelDon}
                 updateDonations = {this.getAllDonations}
             />
             <OrgInfoModal
                 orgID = {this.state.selectedOrgID}
                 show = {this.state.showOrg}
-                setShow = {this.state.setShowOrg}
+                setShow = {this.setShowOrg}
             />
             <Button 
                 variant="customOrange"
@@ -220,7 +209,9 @@ class Donations extends React.PureComponent {
                 onClick={() => this.setShowMakeDon(true)}>
                 Make a Donation
             </Button>
-            <Card className="card-style">
+            <br></br>
+            <br></br>
+            <Card className="card-style-don">
                 <Card.Body>
                     <h3>Search Donations</h3>
                     <Form>
@@ -235,12 +226,12 @@ class Donations extends React.PureComponent {
                                 ref={this.search}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Show my Donations" />
-                            <Form.Control
-                                value = {this.state.showUserOrg}
-                                onChange={(checked) => this.setShowUserOrg(checked)}
-                            />
+                        <Form.Group className="mb-3 align-left" controlId="formBasicCheckbox" >
+                            <Form.Check
+                                inline
+                                type="checkbox"
+                                label="See my Donations"
+                                onChange={event => this.setShowUserOrg(event.target.checked)}/>
                         </Form.Group>
                     </Form>
                     <div className="don-list">

@@ -12,6 +12,7 @@ import history from "./history";
 import { COLORS } from "./constants";
 import { ContextGlobal } from './contexts';
 import Donations from './components/Donations/Donations';
+import Requests from './components/Requests/Requests';
 
 /**
  * Parent for the index/home page. 
@@ -125,7 +126,9 @@ export default function Home() {
                                 />
                             </Tab.Pane>
                             <Tab.Pane eventKey="Requests">
-                            <h1>Requests component here</h1>
+                                <Requests
+                                    orgID = {accountInfo.organization.id}
+                                />
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>

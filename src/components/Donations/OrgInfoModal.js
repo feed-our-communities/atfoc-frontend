@@ -26,11 +26,11 @@ export default function OrgInfoModal({orgID, show, setShow}) {
             <Modal.Title>Org contact Info</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>{orgInfo.name}</h4>
-            <h4>{orgInfo.address}</h4>
-            <h4>{orgInfo.email}</h4>
-            <h4>{orgInfo.phone}</h4>
-            <h4>{orgInfo.url}</h4>
+            <h4><b>Name:</b> {orgInfo?.name}</h4>
+            <h4><b>Address:</b> {orgInfo?.address}</h4>
+            <h4><b>Email:</b> {orgInfo?.email}</h4>
+            <h4><b>Phone:</b> {orgInfo?.phone}</h4>
+            <h4><b>Website:</b> {orgInfo?.url}</h4>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

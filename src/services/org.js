@@ -126,7 +126,7 @@ export async function getApplications(orgID, note, token){
 export async function deleteDonation(donationID, token){
     let requestOptions = getStandardRequestOptions(token)
     let raw = JSON.stringify({
-        "donation_id": donationID,
+        "donation_id": donationID
     });
     requestOptions.body = raw
     requestOptions.method = 'DELETE'
@@ -144,20 +144,71 @@ export async function deleteDonation(donationID, token){
     }
 }
 
-export async function makeDonation(body, token){
-    let requestOptions = getStandardRequestOptions(token)
-    requestOptions.body = JSON.stringify(body);
-    requestOptions.method = 'POST'
+export async function makeDonation(formData, token){
+    let myHeaders = new Headers()
+    // myHeaders.append("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
+    myHeaders.append("Authorization", "Token " + token)
 
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow'
+    }
+
+    console.log(formData)
     let url = SERVER + "/api/listing/donations/"
     let res
     try {
         res = await fetch(url, requestOptions)
         if (res.ok) {
             alert("listing created")
+        } else{
+            alert("Something went wrong. Please try again")
+        }
+    } catch (error) {
+        alert("Something went wrong. Please try again")
+        console.log(error)
+    }
+}
+
+export async function deleteRequest(requestID, token){
+    let requestOptions = getStandardRequestOptions(token)
+    let raw = JSON.stringify({
+        "request_id": requestID
+    });
+    requestOptions.body = raw
+    requestOptions.method = 'DELETE'
+
+    let url = SERVER + "/api/listing/requests/"
+    let res
+    try {
+        res = await fetch(url, requestOptions)
+        if (res.ok) {
+            alert("listing closed")
         }
     } catch (error) {
         alert(res.message)
+        console.log(error)
+    }
+}
+
+export async function makeRequest(data, token){
+    let requestOptions = getStandardRequestOptions(token)
+    requestOptions.body = data
+    requestOptions.method = 'POST'
+
+    let url = SERVER + "/api/listing/requests/"
+    let res
+    try {
+        res = await fetch(url, requestOptions)
+        if (res.ok) {
+            alert("listing created")
+        } else{
+            alert("Something went wrong. Please try again")
+        }
+    } catch (error) {
+        alert("Something went wrong. Please try again")
         console.log(error)
     }
 }
