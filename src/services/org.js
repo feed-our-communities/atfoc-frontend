@@ -37,6 +37,16 @@ export async function getUserInfo(setUserInfo, token) {
     }
 }
 
+export async function getOrg(orgID, setOrgInfo, token) {
+    var response = await fetch(SERVER + "/api/identity/organization/" + orgID +"/", getStandardRequestOptions(token));
+    var result = await response.json();
+    if (response.ok) {
+      setOrgInfo(result)
+    } else {
+        console.log(result["message"]);
+    }
+}
+
 export async function getOrgList(setOrgList, token){
     let requestOptions = getStandardRequestOptions(token)
     let url = SERVER + "/api/identity/organization/"
@@ -84,7 +94,7 @@ export async function getjoinRequests(setRequests, token){
         let res = await fetch(url, requestOptions)
         console.log(res);
         if (res.ok) {
-            alert("Application Submitted!")
+            // TODO set requests
         }
     } catch (error) {
         console.log(error)
@@ -109,6 +119,96 @@ export async function getApplications(orgID, note, token){
             alert("Application Submitted!")
         }
     } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function deleteDonation(donationID, token){
+    let requestOptions = getStandardRequestOptions(token)
+    let raw = JSON.stringify({
+        "donation_id": donationID
+    });
+    requestOptions.body = raw
+    requestOptions.method = 'DELETE'
+
+    let url = SERVER + "/api/listing/donations/"
+    let res
+    try {
+        res = await fetch(url, requestOptions)
+        if (res.ok) {
+            alert("listing closed")
+        }
+    } catch (error) {
+        alert(res.message)
+        console.log(error)
+    }
+}
+
+export async function makeDonation(formData, token){
+    let myHeaders = new Headers()
+    // myHeaders.append("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
+    myHeaders.append("Authorization", "Token " + token)
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData,
+        redirect: 'follow'
+    }
+
+    console.log(formData)
+    let url = SERVER + "/api/listing/donations/"
+    let res
+    try {
+        res = await fetch(url, requestOptions)
+        if (res.ok) {
+            alert("listing created")
+        } else{
+            alert("Something went wrong. Please try again")
+        }
+    } catch (error) {
+        alert("Something went wrong. Please try again")
+        console.log(error)
+    }
+}
+
+export async function deleteRequest(requestID, token){
+    let requestOptions = getStandardRequestOptions(token)
+    let raw = JSON.stringify({
+        "request_id": requestID
+    });
+    requestOptions.body = raw
+    requestOptions.method = 'DELETE'
+
+    let url = SERVER + "/api/listing/requests/"
+    let res
+    try {
+        res = await fetch(url, requestOptions)
+        if (res.ok) {
+            alert("listing closed")
+        }
+    } catch (error) {
+        alert(res.message)
+        console.log(error)
+    }
+}
+
+export async function makeRequest(data, token){
+    let requestOptions = getStandardRequestOptions(token)
+    requestOptions.body = data
+    requestOptions.method = 'POST'
+
+    let url = SERVER + "/api/listing/requests/"
+    let res
+    try {
+        res = await fetch(url, requestOptions)
+        if (res.ok) {
+            alert("listing created")
+        } else{
+            alert("Something went wrong. Please try again")
+        }
+    } catch (error) {
+        alert("Something went wrong. Please try again")
         console.log(error)
     }
 }

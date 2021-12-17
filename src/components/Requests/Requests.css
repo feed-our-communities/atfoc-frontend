@@ -1,4 +1,4 @@
-.btn-customOrange-don{
+.btn-customOrange-req{
     font-family: "Open Sans", sans-serif !important;
     background-color: #EF8354 !important;
     color: white !important;
@@ -8,14 +8,14 @@
     border: none !important;
   }
 
-.card-style-don{
+.card-style-req{
     margin-right: 40%;
     background-color: #EF8354;
     color: white;
     /* height: 100vh; */
   }
   
-.don-list{
+.req-list{
     max-height: 80vh;
     overflow-y: scroll;
     color: black;
@@ -25,7 +25,7 @@
       text-align: left;
 }
   
-.list-body-don{
+.list-body-req{
     max-height: 10em;
     text-align: left;
 }

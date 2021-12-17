@@ -31,6 +31,12 @@ import { ContextGlobal } from '../../contexts';
 
     let requestCardList = [];
 
+    if(!requests){
+        return (
+            <p>No Active Join Requests</p>
+        )
+    }
+
     for (let i = 0; i < requests.length; i++) {
 
         //should always have both first and last
