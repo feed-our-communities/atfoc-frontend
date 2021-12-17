@@ -53,7 +53,7 @@ export default function Home() {
 
     // render site admin view 
     // TODO get info about this api call
-    let siteAdmin = true;
+    let siteAdmin = false;
     if (siteAdmin) {
         return (
             <>
