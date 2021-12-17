@@ -31,7 +31,7 @@ export default function ManageMembers({orgId}) {
 }
 
 async function getUsers(regMembers, admins, setUsers, getAdmin, token, orgId) {
-
+    orgId = 1;
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
 
@@ -47,11 +47,11 @@ async function getUsers(regMembers, admins, setUsers, getAdmin, token, orgId) {
     if (response.status === 200) {
 
         if (getAdmin) {
-            if (admins !== result["admins"]) {
+            if (JSON.stringify(admins) !== JSON.stringify(result["admins"])) {
                 setUsers(result["admins"]);
             }
         } else {
-            if (regMembers !== result["members"]) {
+            if (JSON.stringify(regMembers) !== JSON.stringify(result["members"])) {
                 setUsers(result["members"]);
             }
         }
@@ -64,8 +64,6 @@ async function getUsers(regMembers, admins, setUsers, getAdmin, token, orgId) {
 }
 
 function makeUserCards(users, isAdmin, token, orgId) {
-
-    console.log(users);
 
     let cards = [];
 
@@ -85,10 +83,10 @@ function makeUserCards(users, isAdmin, token, orgId) {
                 </Button>);
         }
 
-        cards.push(<Card>
+        cards.push(<Card key={i}>
                 <Card.Body>
                     <div className="btn-group">
-                        <p>Name</p>
+                        <p>{users[i].first} {users[i].last}</p>
                         <div className="buttonPad">
                             {adminButton}
                         </div>
