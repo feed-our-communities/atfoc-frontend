@@ -12,7 +12,7 @@ import { ContextGlobal } from '../../contexts';
 
     const [pendingRequests, setPendingRequests] = useState([]);
 
-    getPendingJoinRequests(setPendingRequests, context.token, orgID);
+    getPendingJoinRequests(setPendingRequests, context.token, orgID, pendingRequests);
 
     let requestCards = makeRequestCards(pendingRequests, context.token);
 
@@ -22,8 +22,6 @@ import { ContextGlobal } from '../../contexts';
  }
 
  function makeRequestCards(requests, token) {
-
-    console.log(requests);
 
     //TODO add notes  
     const approveNumber = 1;
@@ -37,10 +35,12 @@ import { ContextGlobal } from '../../contexts';
         )
     }
 
+    console.log(requests);
+
     for (let i = 0; i < requests.length; i++) {
 
         //should always have both first and last
-        let name = requests[i].user.first_name + requests[i].user.last_name;
+        let name = requests[i].user.first + " " + requests[i].user.last;
 
         requestCardList.push(
             <Card>
@@ -79,16 +79,16 @@ function updateJoinRequestStatus(status, token) {
     callUpdateJoinRequestAPI(status, token);
 }
 
- async function getPendingJoinRequests(setPendingRequests, token, orgID) {
+ async function getPendingJoinRequests(setPendingRequests, token, orgID, joinRequests) {
 
     const pendingStatusNum = 0;
 
-    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests, token, orgID);
+    let result = await callJoinRequestsAPI(pendingStatusNum, setPendingRequests, token, orgID, joinRequests);
 
     return result;
  }
 
- async function callJoinRequestsAPI(status, setPendingRequests, token, orgID) {
+ async function callJoinRequestsAPI(status, setPendingRequests, token, orgID, joinRequests) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token" + token);
@@ -103,7 +103,9 @@ function updateJoinRequestStatus(status, token) {
     let result = await response.json();
 
     if (response.status === 200 || response.status === 204) {
-        setPendingRequests(result["join_requests"]);
+        if (JSON.stringify(joinRequests) !== JSON.stringify(result)){
+            setPendingRequests(result);
+        }
     } else {
         console.log(result);
     }
