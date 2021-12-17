@@ -78,7 +78,7 @@ function makeOrgCards(orgApps, setOrgApps, token) {
             <Card key={i}>
                 <Card.Body>
                     <div className="btn-group">
-                        <p>{orgApps[i]["name"]}</p>
+                        <p style={{marginRight: '35vw'}}>{orgApps[i]["name"]}</p>
                         <div className="buttonPad">
                             <Button variant="customOrange" type="button" onClick={function() {changeOrgAppStatus(approveNum, orgApps, setOrgApps, orgApps[i]["id"], token)}}>
                                 Approve

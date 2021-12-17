@@ -67,8 +67,8 @@ function makeOrgCards(orgs, token) {
             <Card key={i}>
                 <Card.Body>
                     <div className="btn-group">
-                        <p>{orgs[i]["id"]} </p>
-                        <p>{orgs[i]["name"]}</p>
+                        <p style={{marginRight: '24vw'}}>{orgs[i]["id"]} </p>
+                        <p style={{marginRight: '24vw'}}>{orgs[i]["name"]}</p>
                         <div className="buttonPad">
                             <Button variant="customBlue" type="button" onClick={function() {removeOrg(token)}}>
                                 Remove
