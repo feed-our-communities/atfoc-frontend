@@ -73,19 +73,21 @@ function makeUserCards(users, isAdmin, token) {
     let cards = [];
 
     let adminButton = (<></>);
-    if (isAdmin) {
-        adminButton = (
-            <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token);}}>
-                Remove Admin
-            </Button>);
-    } else {
-        adminButton = (
-            <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token);}}>
-                Make Admin
-            </Button>);
-    }
-
+    
     for (let i = 0; i < users.length; i++) {
+
+        if (isAdmin) {
+            adminButton = (
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token, users[i].id);}}>
+                    Remove Admin
+                </Button>);
+        } else {
+            adminButton = (
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token, users[i].id);}}>
+                    Make Admin
+                </Button>);
+        }
+
         cards.push(<Card>
                 <Card.Body>
                     <div className="btn-group">
@@ -94,7 +96,7 @@ function makeUserCards(users, isAdmin, token) {
                             {adminButton}
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token)}}>
+                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token, users[i].id)}}>
                                 Remove
                             </Button>
                         </div>
@@ -106,10 +108,7 @@ function makeUserCards(users, isAdmin, token) {
     return cards; 
 } 
 
-async function changeAdminStatus(newStatus, token) {
-
-    //TODO get user_id
-    let user_id = 0;
+async function changeAdminStatus(newStatus, token, user_id) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
@@ -128,11 +127,8 @@ async function changeAdminStatus(newStatus, token) {
     let result = await response.json();
 }
 
-async function removeMember(token) {
-
-    //TODO get user id
-    //TODO check that parameter is right with api call
-    let user_id = 0;
+async function removeMember(token, user_id) {
+    //TODO check that parameter is right with api call? unsure 
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token" + token);
