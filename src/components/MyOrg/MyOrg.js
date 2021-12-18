@@ -9,13 +9,14 @@ import JoinRequests from '../JoinRequestsView/JoinRequests';
 import ManageMembers from '../ManageMembers/ManageMembers';
 
 function dispOrg(orgInfo){
+  // TODO display better
   return(
     <>
-      <h4>{orgInfo.name}</h4>
-      <h4>{orgInfo.address}</h4>
-      <h4>{orgInfo.email}</h4>
-      <h4>{orgInfo.phone}</h4>
-      <h4>{orgInfo.url}</h4>
+      <h4><b>Name:</b> {orgInfo.name}</h4>
+      <h4><b>Address:</b> {orgInfo.address}</h4>
+      <h4><b>Email:</b> {orgInfo.email}</h4>
+      <h4><b>Phone:</b> {orgInfo.phone}</h4>
+      <h4><b>Website:</b> {orgInfo.url}</h4>
     </>
   )
 }
