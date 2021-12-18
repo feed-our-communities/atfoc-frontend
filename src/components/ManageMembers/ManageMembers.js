@@ -106,20 +106,24 @@ async function changeAdminStatus(newStatus, token, user_id, org_id) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
 
-    var formdata = new FormData();
-    formdata.append("user_id", user_id);
-    formdata.append("is_admin", newStatus);
+    var raw = JSON.stringify({
+                "user_id": userID,
+                "is_admin": newStatus
+            });
 
     var requestOptions = {
     method: 'PUT',
     headers: myHeaders,
-    body: formdata,
+    body: raw,
     redirect: 'follow'
     };
 
     let response = await fetch("/api/identity/org/"+ org_id +"/members/", requestOptions);
     let result = await response.json();
+
+
 }
 
 async function removeMember(token, user_id, org_id) {
