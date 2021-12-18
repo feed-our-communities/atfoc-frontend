@@ -124,6 +124,12 @@ async function changeAdminStatus(newStatus, token, userID, org_id) {
     let response = await fetch("http://localhost:8000/api/identity/org/"+ org_id +"/members/", requestOptions);
     let result = await response.json();
 
+    if (response.status === 201) {
+        alert("Admin status changed");
+    } else {
+        console.log(response);
+    }
+    
 }
 
 async function removeMember(token, user_id, org_id) {
@@ -149,5 +155,7 @@ async function removeMember(token, user_id, org_id) {
 
     if (response.status !== 200) {
         console.log(response);
+    } else {
+        alert("User successfully removed!");
     }
 }

@@ -132,7 +132,6 @@ import { ContextGlobal } from '../../contexts';
 
     if (response.status === 200) {
         if (status === 1) {
-            alert("Join request approved");
             callAddUserToOrg(token, userID, isAdmin, orgID);
         } else if (status === 2) {
             alert("Join request denied");
