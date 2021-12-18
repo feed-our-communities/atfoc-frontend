@@ -14,14 +14,18 @@ import { ContextGlobal } from '../../contexts';
 
     getPendingJoinRequests(setPendingRequests, context.token, orgID, pendingRequests);
 
-    let requestCards = makeRequestCards(pendingRequests, context.token);
+    let requestCards = makeRequestCards(pendingRequests, context.token, orgID);
 
     return (<>
                 {requestCards}
             </>);
  }
 
- function makeRequestCards(requests, token) {
+ function makeRequestCards(requests, token, orgID) {
+
+    //userID and isAdmin
+    let userID = 0;
+    let is_admin = false;
 
     //TODO add notes  
     const approveNumber = 1;
@@ -51,7 +55,7 @@ import { ContextGlobal } from '../../contexts';
                             {requests[i].note}
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(approveNumber, requests[i].id, token);}}>
+                            <Button variant="customOrange" type="button" onClick={function() {callApproveJoinRequestAPI(token, orgID, userID, is_admin);}}>
                                 Approve
                             </Button>
                         </div>
@@ -109,6 +113,27 @@ function updateJoinRequestStatus(status, id, token) {
     } else {
         console.log(result);
     }
+ }
+
+ async function callApproveJoinRequestAPI(token, orgID, userID, is_admin) {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
+    
+    var raw = JSON.stringify({
+      "user_id": userID,
+      "is_admin": is_admin
+    });
+    
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    let response = await fetch("http://localhost:8000/api/identity/org/" + orgID + "/members/", requestOptions);
+    let result = await response.json();
  }
 
  async function callUpdateJoinRequestAPI(status, requestId, token) {
