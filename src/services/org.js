@@ -30,6 +30,7 @@ export async function getUserInfo(setUserInfo, token) {
         return
     }
     if(res.ok){
+        console.log(orgInfo)
         setUserInfo(orgInfo)
     } else if (res.status === 401) {
         // invalid token

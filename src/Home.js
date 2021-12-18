@@ -54,7 +54,7 @@ export default function Home() {
 
     // render site admin view 
     // TODO get info about this api call
-    let siteAdmin = false;
+    let siteAdmin = accountInfo.is_site_admin;
     if (siteAdmin) {
         return (
             <>
