@@ -92,7 +92,7 @@ class Requests extends React.PureComponent {
 
     handleOrgSelection(orgID){
         this.setShowOrg(true) // show the org info modal
-        this.setState({SelectedOrgID: orgID})
+        this.setState({selectedOrgID: orgID})
     }
 
     handleDelDonBtn(reqID){
@@ -188,7 +188,7 @@ class Requests extends React.PureComponent {
             />
             <OrgInfoModal
                 orgID = {this.state.selectedOrgID}
-                show = {this.showOrg}
+                show = {this.state.showOrg}
                 setShow = {this.setShowOrg}
             />
             <Button 
