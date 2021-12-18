@@ -67,7 +67,6 @@ function makeUserCards(users, isAdmin, token, orgID) {
     let cards = [];
 
     let adminButton = (<></>);
-    console.log(users);
     
     for (let i = 0; i < users.length; i++) {
 
@@ -91,7 +90,7 @@ function makeUserCards(users, isAdmin, token, orgID) {
                             {adminButton}
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token, users[i].id, orgID)}}>
+                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token, users[i].user_id, orgID)}}>
                                 Remove
                             </Button>
                         </div>
@@ -128,20 +127,27 @@ async function changeAdminStatus(newStatus, token, userID, org_id) {
 }
 
 async function removeMember(token, user_id, org_id) {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Token" + token);
 
-    var formdata = new FormData();
-    formdata.append("user_id", user_id);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+                "user_id": user_id,
+                "is_admin": false
+            });
 
     var requestOptions = {
-    method: 'POST',
+    method: 'DELETE',
     headers: myHeaders,
-    body: formdata,
+    body: raw,
     redirect: 'follow'
     };
 
-    let response = await fetch("http://localhost:8000/api/identity/org/"+ org_id + "/members/", requestOptions);
+    let response = await fetch("http://localhost:8000/api/identity/org/"+ org_id +"/members/", requestOptions);
     let result = await response.json();
 
+    if (response.status !== 200) {
+        console.log(response);
+    }
 }
