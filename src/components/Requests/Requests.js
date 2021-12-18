@@ -48,11 +48,16 @@ class Requests extends React.PureComponent {
 
     async getAllRequests() {
         var response = await fetch(SERVER + "/api/listing/requests/?status=active", getStandardRequestOptions(this.context.token));
-        var result = await response.json();
-        if (response.ok) {
+        if (response.status == 200){
+            var result = await response.json();
             this.setState({
                 allRequests: result.requests,
                 filteredRequests: result.requests
+            });
+        } else if (response.status == 204) {
+            this.setState({
+                allRequests: [],
+                filteredRequests: [],
             });
         } else {
             console.log(result["message"]);

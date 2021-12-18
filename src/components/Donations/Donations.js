@@ -48,11 +48,17 @@ class Donations extends React.PureComponent {
 
     async getAllDonations() {
         var response = await fetch(SERVER + "/api/listing/donations/?status=active", getStandardRequestOptions(this.context.token));
-        var result = await response.json();
-        if (response.ok) {
+
+        if (response.status == 200){
+            var result = await response.json();
             this.setState({
                 allDonations: result.donations,
-                filteredDonations: result.donations
+                filteredDonations: result.donations,
+            });
+        } else if (response.status == 204) {
+            this.setState({
+                allDonations: [],
+                filteredDonations: [],
             });
         } else {
             console.log(result["message"]);
