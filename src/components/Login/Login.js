@@ -70,7 +70,7 @@ class Login extends React.Component {
                 if (response.status === 400) {
                     this.setState({
                         errVisible: true,
-                        errMessage: "Missing Email or Password Field",
+                        errMessage: "Incorrect or Missing Email or Password Field",
                     });
 
                 } else if (response.status === 401) {
