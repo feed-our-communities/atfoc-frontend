@@ -72,12 +72,12 @@ function makeUserCards(users, isAdmin, token, orgID) {
 
         if (isAdmin) {
             adminButton = (
-                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token, users[i].id, orgID);}}>
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token, users[i].user_id, orgID);}}>
                     Remove Admin
                 </Button>);
         } else {
             adminButton = (
-                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token, users[i].id, orgID);}}>
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token, users[i].user_id, orgID);}}>
                     Make Admin
                 </Button>);
         }
@@ -90,7 +90,7 @@ function makeUserCards(users, isAdmin, token, orgID) {
                             {adminButton}
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token, users[i].id, orgID)}}>
+                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token, users[i].user_id, orgID)}}>
                                 Remove
                             </Button>
                         </div>
@@ -102,41 +102,60 @@ function makeUserCards(users, isAdmin, token, orgID) {
     return cards; 
 } 
 
-async function changeAdminStatus(newStatus, token, user_id, org_id) {
+async function changeAdminStatus(newStatus, token, userID, org_id) {
+    console.log(userID);
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
 
-    var formdata = new FormData();
-    formdata.append("user_id", user_id);
-    formdata.append("is_admin", newStatus);
+    var raw = JSON.stringify({
+                "user_id": userID,
+                "is_admin": newStatus
+            });
 
     var requestOptions = {
     method: 'PUT',
     headers: myHeaders,
-    body: formdata,
+    body: raw,
     redirect: 'follow'
     };
 
-    let response = await fetch("/api/identity/org/"+ org_id +"/members/", requestOptions);
+    let response = await fetch("http://localhost:8000/api/identity/org/"+ org_id +"/members/", requestOptions);
     let result = await response.json();
+
+    if (response.status === 201) {
+        alert("Admin status changed");
+    } else {
+        console.log(response);
+    }
+    
 }
 
 async function removeMember(token, user_id, org_id) {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Token" + token);
 
-    var formdata = new FormData();
-    formdata.append("user_id", user_id);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+                "user_id": user_id,
+                "is_admin": false
+            });
 
     var requestOptions = {
-    method: 'POST',
+    method: 'DELETE',
     headers: myHeaders,
-    body: formdata,
+    body: raw,
     redirect: 'follow'
     };
 
-    let response = await fetch("http://localhost:8000/api/identity/org/"+ org_id + "/members/", requestOptions);
+    let response = await fetch("http://localhost:8000/api/identity/org/"+ org_id +"/members/", requestOptions);
     let result = await response.json();
 
+    if (response.status !== 200) {
+        console.log(response);
+    } else {
+        alert("User successfully removed!");
+    }
 }

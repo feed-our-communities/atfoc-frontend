@@ -14,14 +14,17 @@ import { ContextGlobal } from '../../contexts';
 
     getPendingJoinRequests(setPendingRequests, context.token, orgID, pendingRequests);
 
-    let requestCards = makeRequestCards(pendingRequests, context.token);
+    let requestCards = makeRequestCards(pendingRequests, context.token, orgID);
 
     return (<>
                 {requestCards}
             </>);
  }
 
- function makeRequestCards(requests, token) {
+ function makeRequestCards(requests, token, orgID) {
+
+    console.log(requests);
+
 
     //TODO add notes  
     const approveNumber = 1;
@@ -51,12 +54,12 @@ import { ContextGlobal } from '../../contexts';
                             {requests[i].note}
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customOrange" type="button" onClick={function() {updateJoinRequestStatus(approveNumber, requests[i].id, token);}}>
+                            <Button variant="customOrange" type="button" onClick={function() {callUpdateJoinRequestAPI(approveNumber, requests[i].id, token, requests[i].user.id, false, orgID);}}>
                                 Approve
                             </Button>
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {updateJoinRequestStatus(rejectNumber, requests[i].id, token);}}>
+                            <Button variant="customBlue" type="button" onClick={function() {callUpdateJoinRequestAPI(rejectNumber, requests[i].id, token, requests[i].user.id, false, orgID);}}>
                                 Reject
                             </Button>
                         </div>
@@ -74,10 +77,6 @@ import { ContextGlobal } from '../../contexts';
      
     return requestCardList;
  }
-
-function updateJoinRequestStatus(status, id, token) {
-    callUpdateJoinRequestAPI(status, id, token);
-}
 
  async function getPendingJoinRequests(setPendingRequests, token, orgID, joinRequests) {
 
@@ -111,25 +110,64 @@ function updateJoinRequestStatus(status, id, token) {
     }
  }
 
- async function callUpdateJoinRequestAPI(status, requestId, token) {
+ async function callUpdateJoinRequestAPI(status, requestId, token, userID, isAdmin, orgID) {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token" + token);
+    myHeaders.append("Content-Type", "application/json");
 
-    var formdata = new FormData();
-    formdata.append("request_id", requestId);
-    formdata.append("status", status);
+    var raw = JSON.stringify({
+        "status": status
+      });
 
     var requestOptions = {
     method: 'PATCH',
     headers: myHeaders,
-    body: formdata,
+    body: raw,
     redirect: 'follow'
     };
 
-    let response = await fetch("http://localhost:8000/api/identity/joinrequests/", requestOptions);
+    let response = await fetch("http://localhost:8000/api/identity/joinrequests/" + requestId + "/", requestOptions);
     let result = await response.json();
 
-    //TODO error handling
+    if (response.status === 200) {
+        if (status === 1) {
+            callAddUserToOrg(token, userID, isAdmin, orgID);
+        } else if (status === 2) {
+            alert("Join request denied");
+        }
+    } else {
+        console.log(response);
+    }
+
+}
+
+async function callAddUserToOrg(token, userID, isAdmin, orgID) {
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Token " + token);
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+        "user_id": userID,
+        "is_admin": isAdmin
+    });
+
+    var requestOptions = {
+    method: 'PUT',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+    };
+
+    let response = await fetch("http://localhost:8000/api/identity/org/" + orgID + "/members/", requestOptions);
+    let result = await response.json();
+
+    if (response.status === 201) {
+        alert("Join request approved");
+    } else {
+        console.log(response);
+        console.log(userID)
+    }
 
 }
