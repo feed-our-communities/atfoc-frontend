@@ -47,7 +47,7 @@ class Donations extends React.PureComponent {
     }
 
     async getAllDonations() {
-        var response = await fetch(SERVER + "/api/listing/donations/", getStandardRequestOptions(this.context.token));
+        var response = await fetch(SERVER + "/api/listing/donations/?status=active", getStandardRequestOptions(this.context.token));
         var result = await response.json();
         if (response.ok) {
             this.setState({
@@ -112,7 +112,7 @@ class Donations extends React.PureComponent {
             let donID = donList[i].donation_id
             let desc = donList[i].description
             let exp = new Date(donList[i].expiration_date).toLocaleString().split(',')[0]
-            let picture_url = donList[i].picture
+            let picture_url = SERVER + donList[i].picture
             // let traits = donList[i].traits
             donCards.push(
                 <Card key={i}>
