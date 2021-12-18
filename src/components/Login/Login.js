@@ -106,7 +106,7 @@ class Login extends React.Component {
                             >
                                 <Form.Control
                                     type="email"
-                                    placeholder="Username"
+                                    placeholder="Email (this is your username)"
                                     ref={this.username}
                                 />
                             </Form.Group>
