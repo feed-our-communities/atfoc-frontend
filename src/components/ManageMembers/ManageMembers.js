@@ -6,11 +6,14 @@ import { ContextGlobal } from '../../contexts';
 /**
  * @returns manage members view
  */
-export default function ManageMembers({orgId}) {
+export default function ManageMembers(orgId) {
+    //orgId = orgId.orgId;
     const context = useContext(ContextGlobal);
 
     const [regMembers, setRegMembers] = useState([]);
     const [admins, setAdmins] = useState([]);
+
+    console.log(orgId);
 
     getUsers(regMembers, admins, setRegMembers, false, context.token, orgId);
     getUsers(regMembers, admins, setAdmins, true, context.token, orgId);
