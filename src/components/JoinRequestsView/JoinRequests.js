@@ -146,7 +146,7 @@ import { ContextGlobal } from '../../contexts';
 async function callAddUserToOrg(token, userID, isAdmin, orgID) {
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Token" + token);
+    myHeaders.append("Authorization", "Token " + token);
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
