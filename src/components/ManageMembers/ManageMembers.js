@@ -6,17 +6,17 @@ import { ContextGlobal } from '../../contexts';
 /**
  * @returns manage members view
  */
-export default function ManageMembers({orgId}) {
+export default function ManageMembers({orgID}) {
     const context = useContext(ContextGlobal);
 
     const [regMembers, setRegMembers] = useState([]);
     const [admins, setAdmins] = useState([]);
 
-    getUsers(regMembers, admins, setRegMembers, false, context.token, orgId);
-    getUsers(regMembers, admins, setAdmins, true, context.token, orgId);
+    getUsers(regMembers, admins, setRegMembers, false, context.token, orgID);
+    getUsers(regMembers, admins, setAdmins, true, context.token, orgID);
 
-    let regMemberCards = makeUserCards(regMembers, false, context.token, orgId);
-    let adminCards = makeUserCards(admins, true, context.token, orgId);
+    let regMemberCards = makeUserCards(regMembers, false, context.token, orgID);
+    let adminCards = makeUserCards(admins, true, context.token, orgID);
 
     return (<>
                 <Tabs defaultActiveKey="members">
@@ -30,8 +30,7 @@ export default function ManageMembers({orgId}) {
             </>);
 }
 
-async function getUsers(regMembers, admins, setUsers, getAdmin, token, orgId) {
-
+async function getUsers(regMembers, admins, setUsers, getAdmin, token, orgID) {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
 
@@ -41,17 +40,17 @@ async function getUsers(regMembers, admins, setUsers, getAdmin, token, orgId) {
     redirect: 'follow'
     };
 
-    let response = await fetch("http://localhost:8000/api/identity/org/"+orgId+"/members/", requestOptions);
+    let response = await fetch("http://localhost:8000/api/identity/org/"+orgID+"/members/", requestOptions);
     let result = await response.json();
 
     if (response.status === 200) {
 
         if (getAdmin) {
-            if (admins !== result["admins"]) {
+            if (JSON.stringify(admins) !== JSON.stringify(result["admins"])) {
                 setUsers(result["admins"]);
             }
         } else {
-            if (regMembers !== result["members"]) {
+            if (JSON.stringify(regMembers) !== JSON.stringify(result["members"])) {
                 setUsers(result["members"]);
             }
         }
@@ -63,9 +62,7 @@ async function getUsers(regMembers, admins, setUsers, getAdmin, token, orgId) {
     }
 }
 
-function makeUserCards(users, isAdmin, token, orgId) {
-
-    console.log(users);
+function makeUserCards(users, isAdmin, token, orgID) {
 
     let cards = [];
 
@@ -75,25 +72,25 @@ function makeUserCards(users, isAdmin, token, orgId) {
 
         if (isAdmin) {
             adminButton = (
-                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token, users[i].id, orgId);}}>
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token, users[i].id, orgID);}}>
                     Remove Admin
                 </Button>);
         } else {
             adminButton = (
-                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token, users[i].id, orgId);}}>
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token, users[i].id, orgID);}}>
                     Make Admin
                 </Button>);
         }
 
-        cards.push(<Card>
+        cards.push(<Card key={i}>
                 <Card.Body>
                     <div className="btn-group">
-                        <p>Name</p>
+                        <p>{users[i].first} {users[i].last}</p>
                         <div className="buttonPad">
                             {adminButton}
                         </div>
                         <div className="buttonPad">
-                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token, users[i].id, orgId)}}>
+                            <Button variant="customBlue" type="button" onClick={function() {removeMember(token, users[i].id, orgID)}}>
                                 Remove
                             </Button>
                         </div>

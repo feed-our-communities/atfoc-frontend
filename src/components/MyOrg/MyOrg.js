@@ -30,11 +30,11 @@ function DispAdmin({accountInfo}){
   const handleCloseManageMembers = () => setShowManageMembers(false);
   const handleCloseJoinRequests = () => setShowJoinRequests(false);
 
-  // do not show admin view for non admin user
-  console.log("HERE", accountInfo);
   if (!accountInfo.is_org_admin) {
     return null
   }
+
+  console.log(accountInfo.organization.id)
 
   return(
     <>
@@ -83,7 +83,7 @@ function DispAdmin({accountInfo}){
             <Modal.Title id="manage-members">Manage Members</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <ManageMembers/>
+            <ManageMembers orgID = {accountInfo.organization.id}/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseManageMembers}>
