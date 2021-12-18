@@ -67,17 +67,18 @@ function makeUserCards(users, isAdmin, token, orgID) {
     let cards = [];
 
     let adminButton = (<></>);
+    console.log(users);
     
     for (let i = 0; i < users.length; i++) {
 
         if (isAdmin) {
             adminButton = (
-                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token, users[i].id, orgID);}}>
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(false, token, users[i].user_id, orgID);}}>
                     Remove Admin
                 </Button>);
         } else {
             adminButton = (
-                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token, users[i].id, orgID);}}>
+                <Button variant="customOrange" type="button" onClick={function() {changeAdminStatus(true, token, users[i].user_id, orgID);}}>
                     Make Admin
                 </Button>);
         }
@@ -102,7 +103,8 @@ function makeUserCards(users, isAdmin, token, orgID) {
     return cards; 
 } 
 
-async function changeAdminStatus(newStatus, token, user_id, org_id) {
+async function changeAdminStatus(newStatus, token, userID, org_id) {
+    console.log(userID);
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Token " + token);
@@ -120,9 +122,8 @@ async function changeAdminStatus(newStatus, token, user_id, org_id) {
     redirect: 'follow'
     };
 
-    let response = await fetch("/api/identity/org/"+ org_id +"/members/", requestOptions);
+    let response = await fetch("http://localhost:8000/api/identity/org/"+ org_id +"/members/", requestOptions);
     let result = await response.json();
-
 
 }
 
